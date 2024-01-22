@@ -5,7 +5,6 @@ import genericErc20Abi from "@/contracts/erc20.json";
 import {
   checkIfGasCanBePaid,
   getEthersSigner,
-  isWalletBackupAvailable,
   waitForConfirmationOrThrow,
   Web3Error,
 } from "@/web3/web3-common";
@@ -127,9 +126,6 @@ export async function submitStakeTransaction(args: {
   safirSig: string | null;
   ethAddress: string;
 }): Promise<StakeError | null> {
-  if (!isFallbackModeActive() && !(await isWalletBackupAvailable())) {
-    return "ERROR_MISSING_WALLET_BACKUP";
-  }
 
   const reserveError = await checkAvinocReserves({
     avinocAmount: args.avinocAmount,

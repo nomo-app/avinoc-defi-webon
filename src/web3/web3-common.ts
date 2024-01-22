@@ -39,11 +39,6 @@ export type Web3Error =
   | "ERROR_TX_FAILED"
   | "ERROR_MISSING_WALLET_BACKUP";
 
-export async function isWalletBackupAvailable(): Promise<boolean> {
-  const res = await nomo.mnemonicBackupExisted();
-  return res.mnemonicBackupExisted;
-}
-
 export function useEvmAddress(): { evmAddress: string | null } {
   const [evmAddress, setEvmAddress] = useState<string | null>(null);
   useEffect(() => {
