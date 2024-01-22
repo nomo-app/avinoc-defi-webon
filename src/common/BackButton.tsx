@@ -7,7 +7,7 @@ const BackButton: React.FC = () => {
   return (
     <Button
       sx={{
-        backgroundColor: '#2c04fe',
+        backgroundColor: 'var(--color-primary-button-background)',
         '&:hover': {
           backgroundColor: '#5432fd', // Slightly darker for the hover state
         },

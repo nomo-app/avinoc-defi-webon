@@ -101,6 +101,16 @@ const MintingPage: React.FC = () => {
       <div className="staking-title-bar">
         <StakingTitleBar />
       </div>
+
+      <div className="minting-status-box">
+        <StatusBox pageState={pageState} />
+      </div>
+      {!!txError && (
+        <div className="minting-error-details">
+          <ErrorDetails error={txError} />
+        </div>
+      )}
+
       <div className="minting-card">
         <AvinocAmountInput value={avinocAmount} maxValue={avinocBalance} onChange={(value) => setAvinocAmount(value)} />
         <SelectYears years={years} onChange={handleYearChange} />
@@ -119,15 +129,6 @@ const MintingPage: React.FC = () => {
         <SwitchToRewardPageButton disabled={isPendingState(pageState)} />
       </div>
 
-      <div className="minting-status-box">
-        <StatusBox pageState={pageState} />
-      </div>
-      {!!txError && (
-        <div className="minting-error-details">
-          <ErrorDetails error={txError} />
-        </div>
-      )}
-
       <ConfirmDialogSlide
         isOpen={confirmDialogOpen}
         years={years}
@@ -142,45 +143,6 @@ const MintingPage: React.FC = () => {
         translationKey={"staking.DialogSuccess"}
       />
     </div>
-    // <div style={mintingMainFlexBox}>
-    //   <div style={{ flexGrow: 10 }} />
-    //   <StakingTitleBar />
-    //   <StatusBox pageState={pageState} />
-    //   {!!txError && <ErrorDetails error={txError} />}
-    //   <Card variant={"elevation"} elevation={3} className={"input-card"}>
-    //     <AvinocAmountInput
-    //       value={avinocAmount}
-    //       maxValue={avinocBalance}
-    //       onChange={(value) => setAvinocAmount(value)}
-    //     />
-    //     <SelectYears years={years} onChange={handleYearChange} />
-    //   </Card>
-    //   <RewardPredictionBox
-    //     years={years}
-    //     avinocAmount={avinocAmount}
-    //     avinocPrice={avinocPrice}
-    //     networkBonus={networkBonus}
-    //   />
-    //   <StakeButton
-    //     disabled={isPendingState(pageState)}
-    //     onClick={onClickStakeButton}
-    //   />
-    //   <ConfirmDialogSlide
-    //     isOpen={confirmDialogOpen}
-    //     years={years}
-    //     selectedAmount={avinocAmount}
-    //     networkBonus={networkBonus}
-    //     handleClose={() => setConfirmDialogOpen(false)}
-    //     handleConfirm={() => submitStaking()}
-    //   />
-    //   <CongratDialogSlide
-    //     isOpen={successDialogOpen}
-    //     handleClose={() => setSuccessDialogOpen(false)}
-    //     translationKey={"staking.DialogSuccess"}
-    //   />
-    //   <SwitchToRewardPageButton disabled={isPendingState(pageState)} />
-    //   <div style={{ flexGrow: 50 }} />
-    // </div>
   );
 };
 

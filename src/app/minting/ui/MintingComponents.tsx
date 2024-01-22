@@ -95,7 +95,7 @@ export const StakeButton: React.FC<{
       onClick={() => props.disabled || props.onClick()}
       style={{
         color: props.disabled ? "white" : undefined,
-        // backgroundColor: props.disabled ? "grey" : "var(--color-primary-button-background)",
+        backgroundColor: props.disabled ? "grey" : "var(--color-primary-button-background)",
       }}
     >
       <div
@@ -106,7 +106,6 @@ export const StakeButton: React.FC<{
           fontSize: "large",
         }}
       >
-        {/* <img src={stakingIcon} alt={""} height={"14px"} /> */}
         {"Stake " + getTokenStandard()}
       </div>
     </button>
@@ -144,18 +143,6 @@ export const SwitchToRewardPageButton: React.FC<{
       {t("staking.claimRewards")}
       </div>
     </button>
-
-    // <a onClick={props.disabled ? undefined : onClick} style={{ width: "100%" }}>
-    //   <button
-    //     style={{
-    //       color: props.disabled ? "white" : undefined,
-    //       backgroundColor: props.disabled ? "gray" : "var(--color-secondary-button-background)",
-    //     }}
-    //     className="secondary-button"
-    //   >
-    //     {t("staking.claimRewards")}
-    //   </button>
-    // </a>
   );
 };
 export const StakingTitleBar: React.FC = () => {

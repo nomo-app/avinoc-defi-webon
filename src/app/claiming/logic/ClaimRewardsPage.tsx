@@ -134,6 +134,11 @@ const ClaimRewardsPage: React.FC = () => {
     <div style={claimRewardsMainFlexBox}>
       <div style={{ flexGrow: "10" }} />
       <TitleBox showBackButton={!selectedNFT} />
+      {pageState === "IDLE" ? (
+        <ClaimedRewards stakingNFTs={stakingNFTs} />
+      ) : (
+        <StatusBox pageState={pageState} />
+      )}
       {!!fetchError && <ErrorDetails error={fetchError} />}
 
       {selectedNFT ? (
@@ -158,25 +163,6 @@ const ClaimRewardsPage: React.FC = () => {
             );
           })}
         </div>
-      )}
-
-      {/* <Card
-        style={{
-          display: Object.values(stakingNFTs).length >= 2 ? undefined : "none",
-          width: "90%",
-          height: "fit-content",
-        }}
-      >
-        <ClaimAllButton
-          disabled={isPendingState(pageState)}
-          onClick={onClickClaimAll}
-        />
-      </Card> */}
-
-      {pageState === "IDLE" ? (
-        <ClaimedRewards stakingNFTs={stakingNFTs} />
-      ) : (
-        <StatusBox pageState={pageState} />
       )}
 
       <CongratDialogSlide
