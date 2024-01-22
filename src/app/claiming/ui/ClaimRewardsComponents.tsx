@@ -175,6 +175,9 @@ export const StakingNftBox: React.FC<{
       style={{
         padding: "4px",
         height: "fit-content",
+        width: "100vw",
+        flexShrink: 0,
+        marginBottom: "1rem",
       }}
     >
       <div

@@ -85,23 +85,14 @@ body {
 
 
 .scroll-container {
-    display: grid;
-    grid-gap: calc(var(--gutter) / 2);
-    grid-auto-flow: column;
-    grid-auto-columns: calc(100% - var(--gutter) * 2);
-    grid-template-columns: 10px;
-    grid-template-rows: minmax(150px, 1fr);
-    overflow-x: scroll;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    overflow-y: scroll;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x proximity;
     padding: 5px 5px 5px 5px;
-    /*height: fit-content;*/
-}
-
-.scroll-container::before{
-    content: '';
-    margin: 100px;
+    height: fit-content;
 }
 
 .avi-logo{
