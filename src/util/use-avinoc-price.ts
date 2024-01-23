@@ -26,13 +26,32 @@ export function useAvinocPrice() {
   return { avinocPrice };
 }
 
-export function formatAVINOCAmount(args: { tokenAmount: bigint, ultraPrecision?: boolean }): string {
+export function formatAVINOCAmount(args: {
+  tokenAmount: bigint;
+  ultraPrecision?: boolean;
+}): string {
   const inpreciseTokenAmount = Number(args.tokenAmount) / 1e18;
   const tokenStandard = getTokenStandard();
 
   if (args.ultraPrecision && inpreciseTokenAmount > 0) {
-    const log2 = Math.floor(Math.log2(inpreciseTokenAmount));
-    const precision = Math.max(0, 10 - log2);
+    let precision: number;
+    if (inpreciseTokenAmount < 0.1) {
+      precision = 9;
+    } else if (inpreciseTokenAmount < 1) {
+      precision = 8;
+    } else if (inpreciseTokenAmount < 10) {
+      precision = 7;
+    } else if (inpreciseTokenAmount < 100) {
+      precision = 6;
+    } else if (inpreciseTokenAmount < 1000) {
+      precision = 5;
+    } else if (inpreciseTokenAmount < 10000) {
+      precision = 4;
+    } else if (inpreciseTokenAmount < 100000) {
+      precision = 3;
+    } else {
+      precision = 2;
+    }
     return inpreciseTokenAmount.toFixed(precision) + " AVINOC " + tokenStandard;
   }
 
