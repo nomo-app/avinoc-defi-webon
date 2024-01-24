@@ -12,6 +12,7 @@ export const claimRewardsMainFlexBox: CSSProperties = {
   textAlign: "center",
   justifyContent: "center",
   fontSize: "calc(10px + 1vmin)",
+  fontFamily: "helvetica",
   height: "100vh",
   width: "100%",
 };

@@ -13,7 +13,6 @@ import { SwitchToRewardPageButton } from "@/app/minting/ui/MintingComponents";
 import { StakingTitleBar } from "@/app/minting/ui/MintingComponents";
 import { AvinocAmountInput } from "@/app/minting/ui/MintingComponents";
 import { SelectYears } from "@/app/minting/ui/MintingComponents";
-import { mintingMainFlexBox } from "@/app/minting/ui/minting-style";
 import { useAvinocPrice } from "@/util/use-avinoc-price";
 import { useEvmAddress } from "@/web3/web3-common";
 import ErrorDetails from "@/common/ErrorDetails";

@@ -135,7 +135,8 @@ const ClaimRewardsPage: React.FC = () => {
       <div style={{ flexGrow: "10" }} />
       <TitleBox showBackButton={!selectedNFT} />
       {pageState === "IDLE" ? (
-        <ClaimedRewards stakingNFTs={stakingNFTs} />
+        <div/>
+        // <ClaimedRewards stakingNFTs={stakingNFTs} />
       ) : (
         <StatusBox pageState={pageState} />
       )}
