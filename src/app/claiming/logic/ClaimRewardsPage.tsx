@@ -13,8 +13,7 @@ import {
 import { UnreachableCaseError } from "../../../util/typesafe";
 import { useEvmAddress } from "@/web3/web3-common";
 import {
-  //ClaimAllButton,
-  ClaimedRewards,
+  ClaimAllButton,
   StakingNftBox,
   TitleBox,
 } from "../ui/ClaimRewardsComponents";
@@ -126,6 +125,15 @@ const ClaimRewardsPage: React.FC = () => {
     doClaim({ tokenIDs: [stakingNft.tokenId] });
   }
 
+  function onClickClaimAll() {
+    const allNFTs: StakingNft[] = Object.values(stakingNFTs);
+    const claimableNFTs = allNFTs.filter(
+      (nft) => nft.lastClaim.getTime() < nft.end.getTime()
+    );
+    const tokenIDs: bigint[] = claimableNFTs.map((nft) => nft.tokenId);
+    doClaim({ tokenIDs });
+  }
+
   const nftID = getNFTID();
   const selectedNFT = nftID ? stakingNFTs[Number(nftID)] : undefined;
   console.log("selectedNFT", selectedNFT);
@@ -135,9 +143,9 @@ const ClaimRewardsPage: React.FC = () => {
       <div style={{ flexGrow: "10" }} />
       <TitleBox showBackButton={!selectedNFT} />
       {pageState === "IDLE" ? (
-        <div/>
-        // <ClaimedRewards stakingNFTs={stakingNFTs} />
+        <div />
       ) : (
+        // <ClaimedRewards stakingNFTs={stakingNFTs} />
         <StatusBox pageState={pageState} />
       )}
       {!!fetchError && <ErrorDetails error={fetchError} />}
@@ -163,6 +171,14 @@ const ClaimRewardsPage: React.FC = () => {
               />
             );
           })}
+          {Object.values(stakingNFTs).length >= 1 ? (
+            <ClaimAllButton
+              disabled={isPendingState(pageState)}
+              onClick={onClickClaimAll}
+            />
+          ) : (
+            <div />
+          )}
         </div>
       )}
 
