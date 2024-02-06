@@ -13,7 +13,11 @@ import {
   LinearProgressProps,
   Typography,
 } from "@mui/material";
-import { computeUnclaimedRewards, StakingNft } from "@/web3/web3-minting";
+import {
+  computeUnclaimedRewards,
+  isFullyClaimed,
+  StakingNft,
+} from "@/web3/web3-minting";
 import { usePeriodReRender } from "../../../util/util";
 import { PageState } from "@/app/minting/logic/MintingPage";
 import { isPendingState } from "@/app/claiming/logic/ClaimRewardsPage";
@@ -166,6 +170,7 @@ export const StakingNftBox: React.FC<{
   const avinocPerDayFormatted = formatAVINOCAmount({
     tokenAmount: avinocPerDay,
   });
+  const fullyClaimed: boolean = isFullyClaimed(props.stakingNft);
 
   function onClickClaimClosure() {
     props.onClickClaim(props.stakingNft);
@@ -323,7 +328,8 @@ export const StakingNftBox: React.FC<{
           </div>
           <div style={{ flexGrow: "20" }} />
           <ClaimButton
-            disabled={isPendingState(props.pageState as any)}
+            disabled={fullyClaimed ?? isPendingState(props.pageState as any)}
+            fullyClaimed={fullyClaimed}
             onClick={onClickClaimClosure}
           />
           <div style={{ flexGrow: "3" }} />
@@ -335,6 +341,7 @@ export const StakingNftBox: React.FC<{
 
 export const ClaimButton: React.FC<{
   disabled: boolean;
+  fullyClaimed: boolean;
   onClick: () => void;
 }> = (props) => {
   const { t } = useTranslation();
@@ -356,7 +363,7 @@ export const ClaimButton: React.FC<{
         color: props.disabled ? undefined : "white",
       }}
     >
-      {t("reward.claim")}
+      {props.fullyClaimed ? t("reward.fullyClaimed") : t("reward.claim")}
     </Button>
   );
 };

@@ -16,7 +16,6 @@ import { SelectYears } from "@/app/minting/ui/MintingComponents";
 import { useAvinocPrice } from "@/util/use-avinoc-price";
 import { useEvmAddress } from "@/web3/web3-common";
 import ErrorDetails from "@/common/ErrorDetails";
-import { useNomoTheme } from "@/util/util";
 import "./MintingPage.scss";
 
 export type PageState = "IDLE" | "PENDING_SUBMIT_TX" | "ERROR_FETCH_FAILED" | StakeError;
@@ -26,7 +25,6 @@ function isPendingState(pageState: PageState) {
 }
 
 const MintingPage: React.FC = () => {
-  useNomoTheme();
 
   const { avinocPrice } = useAvinocPrice();
   const { evmAddress: ethAddress } = useEvmAddress();

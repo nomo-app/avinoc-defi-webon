@@ -20,7 +20,6 @@ import {
 import { claimRewardsMainFlexBox } from "../ui/claim-style";
 import { fetchStakingTokenIDs } from "@/web3/nft-fetching";
 import ErrorDetails from "@/common/ErrorDetails";
-import { useNomoTheme } from "@/util/util";
 import { getNFTID } from "@/web3/navigation";
 
 export type PageState =
@@ -42,7 +41,6 @@ export function isErrorState(pageState: PageState) {
 }
 
 const ClaimRewardsPage: React.FC = () => {
-  useNomoTheme();
 
   const { evmAddress } = useEvmAddress();
   const { avinocPrice } = useAvinocPrice();

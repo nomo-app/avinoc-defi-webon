@@ -220,7 +220,14 @@ export async function fetchStakingNft(args: {
   return stakingNft;
 }
 
+export function isFullyClaimed(stakingNft: StakingNft): boolean {
+  return stakingNft.lastClaim.getTime() >= stakingNft.end.getTime();
+}
+
 function getClaimFraction(stakingNft: StakingNft): bigint {
+  if (isFullyClaimed(stakingNft)) {
+    return 0n;
+  }
   return (
     (10n ** 18n * BigInt(Date.now() - stakingNft.lastClaim.getTime())) /
     BigInt(stakingNft.end.getTime() - stakingNft.start.getTime())

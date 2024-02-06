@@ -49,6 +49,7 @@
     "claimRewards": "Claim Rewards",
     "claim": "Claim",
     "claimAll": "Claim All",
+    "fullyClaimed": "Fully Claimed",
     "claimedRewards": "Paid Rewards",
     "unclaimedRewards": "Unclaimed Rewards",
     "DialogSuccess": "You have successfully claimed your rewards.",
