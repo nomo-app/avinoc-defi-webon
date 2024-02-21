@@ -28,6 +28,12 @@ export default function Home() {
         <div className="migration-info">
           Migrate from ERC20 to ZEN20
         </div>
+        <div className="container">
+          <button className="migrate-button" onClick={openSmartchainFaucet}>Smartchain Faucet</button>
+        </div>
+        <div className="migration-info">
+          Obtain free ZENIQ for paying transaction fees
+        </div>
       </div>
     </div>
   );
@@ -36,6 +42,14 @@ export default function Home() {
 async function installMigrationWebOn() {
   nomo.installWebOn({
     deeplink: "https://nomo.app/webon/avinoc-migration.nomo.app",
+    navigateBack: false,
+    skipPermissionDialog: true,
+  });
+}
+
+async function openSmartchainFaucet() {
+  nomo.installWebOn({
+    deeplink: "https://nomo.app/webon/w.nomo.app/faucet/nomo.tar.gz",
     navigateBack: false,
     skipPermissionDialog: true,
   });
