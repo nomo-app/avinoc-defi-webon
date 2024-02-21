@@ -15,6 +15,7 @@
     "ERROR_NO_NFTS_CLAIM": "No rewards available. Please go back to choose an amount of AVINOC.",
     "ERROR_TX_FAILED": "Error - Transaction failed",
     "ERROR_INSUFFICIENT_ETH": "Error - Cannot pay transaction fees. Please fund your wallet with sufficient Ethereum.",
+    "ERROR_INSUFFICIENT_ZENIQ": "Cannot pay transaction fees. Please fund your wallet with sufficient ZENIQ.",
     "ERROR_LIMIT_EXCEEDED": "AVINOC staking is limited to a maximum of 250000 AVINOC (only for 15 years).",
     "ERROR_INSUFFICIENT_AVINOC": "Insufficient AVINOC amount"
   },

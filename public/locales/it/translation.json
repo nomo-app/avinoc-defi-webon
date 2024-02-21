@@ -15,6 +15,7 @@
     "ERROR_NO_NFTS_CLAIM": "Nessun premio disponibile. Torna indietro per scegliere un importo di AVINOC.",
     "ERROR_TX_FAILED": "Errore - Transazione non riuscita",
     "ERROR_INSUFFICIENT_ETH": "Errore - Impossibile pagare le commissioni di transazione. Ti preghiamo di finanziare il tuo portafoglio con Ethereum sufficiente.",
+    "ERROR_INSUFFICIENT_ZENIQ": "Impossibile pagare le commissioni di transazione. Ti preghiamo di finanziare il tuo portafoglio con ZENIQ sufficiente.",
     "ERROR_LIMIT_EXCEEDED": "Lo staking di AVINOC è limitato a un massimo di 250000 AVINOC (solo per 15 anni).",
     "ERROR_INSUFFICIENT_AVINOC": "Quantità AVINOC insufficiente"
   },

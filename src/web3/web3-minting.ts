@@ -167,7 +167,7 @@ export async function submitStakeTransaction(args: {
 export async function submitClaimTransaction(args: {
   tokenIDs: Array<bigint>;
   ethAddress: string;
-}): Promise<"ERROR_INSUFFICIENT_ETH" | null> {
+}): Promise<"ERROR_CANNOT_PAY_FEE" | null> {
   const gasLimit = gasLimits.toClaim(BigInt(args.tokenIDs.length));
   const gasError = await checkIfGasCanBePaid({
     ethAddress: args.ethAddress,

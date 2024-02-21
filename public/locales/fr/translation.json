@@ -15,6 +15,7 @@
     "ERROR_NO_NFTS_CLAIM": "Aucune récompense disponible. Veuillez revenir en arrière pour choisir une quantité d'AVINOC.",
     "ERROR_TX_FAILED": "Erreur - Échec de la transaction",
     "ERROR_INSUFFICIENT_ETH": "Erreur - Impossible de payer les frais de transaction. Veuillez approvisionner votre portefeuille avec suffisamment d'Ethereum.",
+    "ERROR_INSUFFICIENT_ZENIQ": "Erreur - Impossible de payer les frais de transaction. Veuillez approvisionner votre portefeuille avec suffisamment d'ZENIQ.",
     "ERROR_LIMIT_EXCEEDED": "Le jalonnement AVINOC est limité à un maximum de 250000 AVINOC (seulement pendant 15 ans).",
     "ERROR_INSUFFICIENT_AVINOC": "Quantité d'AVINOC insuffisante"
   },

@@ -20,7 +20,7 @@ import {
 import { claimRewardsMainFlexBox } from "../ui/claim-style";
 import { fetchStakingTokenIDs } from "@/web3/nft-fetching";
 import ErrorDetails from "@/common/ErrorDetails";
-import { getNFTID } from "@/web3/navigation";
+import { getNFTID, getNomoEvmNetwork } from "@/web3/navigation";
 
 export type PageState =
   | "PENDING_TOKENID_FETCH"
@@ -28,7 +28,7 @@ export type PageState =
   | "PENDING_SUBMIT_TX"
   | "IDLE"
   | "ERROR_NO_NFTS_CLAIM"
-  | "ERROR_INSUFFICIENT_ETH"
+  | "ERROR_CANNOT_PAY_FEE"
   | "ERROR_TX_FAILED"
   | "ERROR_FETCH_FAILED";
 
@@ -41,7 +41,6 @@ export function isErrorState(pageState: PageState) {
 }
 
 const ClaimRewardsPage: React.FC = () => {
-
   const { evmAddress } = useEvmAddress();
   const { avinocPrice } = useAvinocPrice();
   const [pageState, setPageState] = React.useState<PageState>(
@@ -100,7 +99,7 @@ const ClaimRewardsPage: React.FC = () => {
 
   function doClaim(args: { tokenIDs: Array<bigint> }) {
     if (!evmAddress) {
-      setPageState("ERROR_INSUFFICIENT_ETH");
+      setPageState("ERROR_CANNOT_PAY_FEE");
       return;
     }
     setPageState("PENDING_SUBMIT_TX");
@@ -200,13 +199,16 @@ const StatusBox: React.FC<{ pageState: PageState }> = (props) => {
       case "ERROR_FETCH_FAILED":
       case "ERROR_TX_FAILED":
       case "ERROR_NO_NFTS_CLAIM":
-      case "ERROR_INSUFFICIENT_ETH":
       case "PENDING_DETAILS_FETCH":
       case "PENDING_TOKENID_FETCH":
       case "PENDING_SUBMIT_TX":
         return t("status." + props.pageState);
       case "IDLE":
         return ""; // should never happen
+      case "ERROR_CANNOT_PAY_FEE":
+        return getNomoEvmNetwork() === "ethereum"
+          ? t("status.ERROR_INSUFFICIENT_ETH")
+          : t("status.ERROR_INSUFFICIENT_ZENIQ");
       default:
         throw new UnreachableCaseError(props.pageState);
     }

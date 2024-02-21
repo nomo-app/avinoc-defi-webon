@@ -35,7 +35,7 @@ export function getEthersSigner(): Signer {
 }
 
 export type Web3Error =
-  | "ERROR_INSUFFICIENT_ETH"
+  | "ERROR_CANNOT_PAY_FEE"
   | "ERROR_TX_FAILED"
   | "ERROR_MISSING_WALLET_BACKUP";
 
@@ -81,7 +81,7 @@ export async function fetchEthereumBalance(args: { ethAddress: string }) {
 export async function checkIfGasCanBePaid(args: {
   ethAddress: string;
   gasLimit: bigint;
-}): Promise<"ERROR_INSUFFICIENT_ETH" | null> {
+}): Promise<"ERROR_CANNOT_PAY_FEE" | null> {
   const provider = getEthersProvider();
   const [ethBalance, gasPrice] = await Promise.all([
     fetchEthereumBalance({
@@ -92,7 +92,7 @@ export async function checkIfGasCanBePaid(args: {
   const costEstimation = args.gasLimit * gasPrice;
   console.log("costEstimation", costEstimation);
   if (ethBalance < costEstimation) {
-    return "ERROR_INSUFFICIENT_ETH";
+    return "ERROR_CANNOT_PAY_FEE";
   } else {
     return null;
   }

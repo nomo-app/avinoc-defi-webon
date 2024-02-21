@@ -2,7 +2,6 @@ import "@/util/i18n"; // needed to initialize i18next
 import React, { useEffect } from "react";
 import "@/common/colors.css";
 import { SelectChangeEvent } from "@mui/material/Select";
-import { Card } from "@mui/material";
 import { CongratDialogSlide } from "@/app/minting/ui/CongratDialog";
 import { ConfirmDialogSlide } from "@/app/minting/ui/ConfirmDialog";
 import { StakeError, submitStakeTransaction, useAvinocBalance, useSafirAvinocSig } from "@/web3/web3-minting";
@@ -72,7 +71,7 @@ const MintingPage: React.FC = () => {
   function submitStaking() {
     setConfirmDialogOpen(false);
     if (!ethAddress) {
-      setPageState("ERROR_INSUFFICIENT_ETH");
+      setPageState("ERROR_CANNOT_PAY_FEE");
       return;
     }
 

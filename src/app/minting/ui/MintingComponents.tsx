@@ -13,12 +13,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { UnreachableCaseError } from "@/util/typesafe";
 
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import { avinocIcon, stakingIcon } from "@/asset-paths";
+import { avinocIcon } from "@/asset-paths";
 import { PageState } from "../logic/MintingPage";
 import BackButton from "@/common/BackButton";
-import { getTokenStandard, navigateToClaimingPage } from "@/web3/navigation";
+import { getNomoEvmNetwork, getTokenStandard, navigateToClaimingPage } from "@/web3/navigation";
 import { formatAVINOCAmount } from "@/util/use-avinoc-price";
 import { useNavigate } from "react-router-dom";
 import "./MintingComponents.scss";
@@ -36,7 +34,6 @@ export const StatusBox: React.FC<{ pageState: PageState }> = (props) => {
 
   function getStatusMessage() {
     switch (props.pageState) {
-      case "ERROR_INSUFFICIENT_ETH":
       case "ERROR_INSUFFICIENT_AVINOC":
       case "ERROR_FETCH_FAILED":
       case "ERROR_MISSING_WALLET_BACKUP":
@@ -47,6 +44,10 @@ export const StatusBox: React.FC<{ pageState: PageState }> = (props) => {
         return t("status." + props.pageState);
       case "IDLE":
         return ""; // should never happen
+      case "ERROR_CANNOT_PAY_FEE":
+        return getNomoEvmNetwork() === "ethereum"
+          ? t("status.ERROR_INSUFFICIENT_ETH")
+          : t("status.ERROR_INSUFFICIENT_ZENIQ");
       default:
         throw new UnreachableCaseError(props.pageState);
     }
@@ -95,7 +96,9 @@ export const StakeButton: React.FC<{
       onClick={() => props.disabled || props.onClick()}
       style={{
         color: props.disabled ? "white" : undefined,
-        backgroundColor: props.disabled ? "grey" : "var(--color-primary-button-background)",
+        backgroundColor: props.disabled
+          ? "grey"
+          : "var(--color-primary-button-background)",
       }}
     >
       <div
@@ -129,7 +132,9 @@ export const SwitchToRewardPageButton: React.FC<{
       onClick={() => props.disabled || onClick()}
       style={{
         color: props.disabled ? "grey" : undefined,
-        backgroundColor: props.disabled ? "grey" : "var(--color-primary-button-background)",
+        backgroundColor: props.disabled
+          ? "grey"
+          : "var(--color-primary-button-background)",
       }}
     >
       <div
@@ -140,7 +145,7 @@ export const SwitchToRewardPageButton: React.FC<{
           fontSize: "large",
         }}
       >
-      {t("staking.claimRewards")}
+        {t("staking.claimRewards")}
       </div>
     </button>
   );
@@ -158,7 +163,9 @@ export const StakingTitleBar: React.FC = () => {
       }}
     >
       <BackButton />
-      <div style={{ fontWeight: "bold", fontSize: "large" }}>{"AVINOC " + tokenStandard + " Staking"}</div>
+      <div style={{ fontWeight: "bold", fontSize: "large" }}>
+        {"AVINOC " + tokenStandard + " Staking"}
+      </div>
     </div>
   );
 };
@@ -254,7 +261,10 @@ export const AvinocAmountInput: React.FC<{
       }}
       InputProps={{
         endAdornment: (
-          <InputAdornment onClick={() => !props.maxValue || props.onChange(props.maxValue)} position="end">
+          <InputAdornment
+            onClick={() => !props.maxValue || props.onChange(props.maxValue)}
+            position="end"
+          >
             <div id={"max_button"} className={"MaxButton"}>
               MAX
             </div>
@@ -262,7 +272,12 @@ export const AvinocAmountInput: React.FC<{
         ),
         startAdornment: (
           <InputAdornment position="start">
-            <img src={avinocIcon} className="Zeniq-Logo" alt="logo" style={{ width: 25, height: 25 }} />
+            <img
+              src={avinocIcon}
+              className="Zeniq-Logo"
+              alt="logo"
+              style={{ width: 25, height: 25 }}
+            />
           </InputAdornment>
         ),
       }}
@@ -276,10 +291,18 @@ export const SelectYears: React.FC<{
   const { t } = useTranslation();
 
   return (
-    <FormControl variant={"outlined"} sx={{ m: 1 }} style={{ width: "90%", marginTop: "2rem", marginBottom: "2rem" }}>
+    <FormControl
+      variant={"outlined"}
+      sx={{ m: 1 }}
+      style={{ width: "90%", marginTop: "2rem", marginBottom: "2rem" }}
+    >
       <InputLabel
         id="stakingTimeTitle"
-        sx={{ color: "white", "&::before": { borderBottomColor: "white" }, "&::after": { borderBottomColor: "white" } }}
+        sx={{
+          color: "white",
+          "&::before": { borderBottomColor: "white" },
+          "&::after": { borderBottomColor: "white" },
+        }}
       >
         {t("reward.stakingPeriod")}
       </InputLabel>
@@ -362,7 +385,9 @@ export const AvinocDollarRewardLabel: React.FC<{ label: string }> = (props) => {
   );
 };
 
-export const BonusBox: React.FC<{ apyLabel: string; networkBonus: boolean }> = (props) => {
+export const BonusBox: React.FC<{ apyLabel: string; networkBonus: boolean }> = (
+  props
+) => {
   const { t } = useTranslation();
 
   if (props.networkBonus) {
