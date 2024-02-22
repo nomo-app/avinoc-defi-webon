@@ -4,7 +4,8 @@ const nomoCliConfig = {
       rawSSH: {
         sshHost: process.env.SSH_TARGET,
         sshBaseDir: "/var/www/production_webons/avinocdefi/",
-        publicBaseUrl: "https://w.nomo.app/avinocdefi",
+        publicBaseUrl: "https://defi.avinoc.com",
+        hybrid: true,
       },
     },
   },
