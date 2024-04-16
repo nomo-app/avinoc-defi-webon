@@ -24,6 +24,7 @@ async function removeDuplicateWebOns() {
 const App: React.FC = () => {
   useEffect(() => {
     removeDuplicateWebOns();
+    nomo.fallbackQRCode();
     nomo.registerOnWebOnVisible((_args: { cardMode: boolean }) => {
       nomo.checkForWebOnUpdate();
     });
