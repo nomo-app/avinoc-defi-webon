@@ -194,12 +194,15 @@ export async function fetchStakingNft(args: {
   const payoutFactor: bigint = rawStakingNft["payoutFactor"];
   const start = new Date(Number(rawStakingNft["start"]) * 1000);
   const end = new Date(Number(rawStakingNft["end"]) * 1000);
-  const lastClaim = new Date(Number(rawStakingNft["lastClaim"]) * 1000);
+  let lastClaim = new Date(Number(rawStakingNft["lastClaim"]) * 1000);
   const years: bigint = BigInt(end.getFullYear() - start.getFullYear());
   const inprecisePayoutFactor = Number(payoutFactor) / 1e18;
   const apy = parseFloat(
     ((100 * (inprecisePayoutFactor - 1.0)) / Number(years)).toFixed(3)
   );
+  if (lastClaim.getTime() > end.getTime()) {
+    lastClaim = end;
+  }
 
   const claimedRewards =
     (amount * payoutFactor * BigInt(lastClaim!.getTime() - start.getTime())) /
