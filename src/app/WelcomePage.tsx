@@ -1,5 +1,5 @@
 import "@/util/i18n";
-import { avinocDeFiLogo } from "@/asset-paths";
+import { avinocDeFiLogo, ethLogo, zeniqLogo } from "@/asset-paths";
 import { navigateToMintingPage } from "@/web3/navigation";
 import { nomo } from "nomo-webon-kit";
 import { useNavigate } from "react-router-dom";
@@ -12,8 +12,6 @@ export default function Home() {
 
   const [chain, setChain] = useState('ethereum');
 
-
-
   return (
     <div className="welcome-page-content">
       <div className="welcome-page-header">
@@ -25,41 +23,54 @@ export default function Home() {
 
         <div className="welcome-page-body">
           <div className="card">
-            <button className="chainselect-button" onClick={() => {
+            <button className={`chainselect-button ${chain === 'zeniq-smart-chain' ? 'selected' : ''}`} onClick={() => {
               // navigateToMintingPage("zeniq-smart-chain", navigate) 
               setChain('zeniq-smart-chain')
             }}>
-              <span>ZEN20</span>
-              <div className="span-divider"> </div>
-              <span>(ZENIQ Smartchain)</span></button>
-            <button className="chainselect-button" onClick={() => {
-              // navigateToMintingPage("ethereum", navigate) 
-              setChain('ethereum')
-            }}>
-              <span>ERC20</span>
-              <div className="span-divider"> </div>
-              <span>(Ethereum)</span>
+              <img src={zeniqLogo} alt="ZENIQ Logo" className="chainselect-logo" />
+              <div className="chainselect-text">
+                <span>ZEN20</span>
+                <div className="span-divider"> </div>
+                <span>(ZENIQ Smartchain)</span>
+              </div>
+            </button>
+
+            <button className={`chainselect-button-eth ${chain === 'ethereum' ? 'selected' : ''}`}
+              onClick={() => {
+                // navigateToMintingPage("ethereum", navigate) 
+                setChain('ethereum')
+              }}>
+              <img src={ethLogo} alt="Ethereum Logo" className="chainselect-logo" />
+              <div className="chainselect-text-eth">
+                <span>ERC20</span>
+                <div className="span-divider"> </div>
+                <span>(Ethereum)</span>
+              </div>
             </button>
           </div>
         </div>
         <div className="unclaimed-rewards-card">
           <h3>Unclaimed Rewards</h3>
-
           <div className="unclaimed-rewards-amount">
-            0.024855 AVINOC ERC 20</div>
+            0.024855 {chain === "ethereum" ? "AVINOC ERC20" : "AVINOC ZEN20"}</div>
           <div className="unclaimed-rewards-amount-currency">$0.4</div>
           <button className="claim-all-button">
             Claim All
           </button>
         </div>
-        <button className="stake-button">
-          Stake ERC20
+        <button className="stake-button" onClick={() => {
+          if (chain === 'ethereum') {
+            navigateToMintingPage("ethereum", navigate);
+          }
+          else {
+            navigateToMintingPage("zeniq-smart-chain", navigate);
+          }
+        }}>
+          Stake {chain === "ethereum" ? "ERC20" : "ZEN20"}
         </button>
-
         <button className="view-staking-button">
           View Staking NFT's
         </button>
-
         <div className="welcome-page-footer">
           <button className="migrate-button" onClick={installMigrationWebOn}>
             Perform Migration
@@ -75,10 +86,7 @@ export default function Home() {
             </div>
           </button>
         </div>
-
       </div>
-
-
     </div>
   );
 }

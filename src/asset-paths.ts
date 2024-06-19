@@ -4,3 +4,6 @@ export const rocketIcon = "assets/rocket.svg";
 export const doubleBoxLogo = "/assets/double-box.png";
 export const boxLogo = "/assets/box.png";
 export const avinocDeFiLogo = "/nomo_icon.svg";
+export const zeniqLogo = "/assets/zeniq_logo.svg";
+export const ethLogo = "/assets/eth_logo.svg";
+export const avinoc = "/assets/avinoc.svg";

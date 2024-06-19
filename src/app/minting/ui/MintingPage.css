@@ -1,4 +1,3 @@
-
 body {
     height: 100%;
 }
@@ -16,11 +15,13 @@ a {
 
 .MaxButton {
     /* color: var(--color-accent); */
-    color: white
+    color: #2FAAA5;
+    font-size: large;
+    font-weight: bold;
 }
 
 .MuiSvgIcon-root {
-    color: var(--color-accent)!important;
+    color: var(--color-accent) !important;
 }
 
 .input-card {
@@ -33,10 +34,10 @@ a {
 }
 
 .MuiTypography-root {
-    color: var(--color-accent)!important;
+    color: var(--color-accent) !important;
 }
 
-.avi-logo{
+.avi-logo {
     height: 13px;
     padding-left: 3px;
 }
@@ -94,7 +95,8 @@ a {
     }
 }
 
-.primary-button:active, .secondary-button:active {
+.primary-button:active,
+.secondary-button:active {
     transform: scale(1.1);
 }
 
@@ -130,7 +132,11 @@ a {
 /* animation */
 
 @keyframes animation {
-    0% {transform:translateX(-100%);}
-    100% {transform:translateX(100%);}
-}
+    0% {
+        transform: translateX(-100%);
+    }
 
+    100% {
+        transform: translateX(100%);
+    }
+}

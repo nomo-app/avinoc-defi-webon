@@ -29,9 +29,13 @@ export function useAvinocPrice() {
 export function formatAVINOCAmount(args: {
   tokenAmount: bigint;
   ultraPrecision?: boolean;
+  showStandard?: boolean;
 }): string {
   const inpreciseTokenAmount = Number(args.tokenAmount) / 1e18;
   const tokenStandard = getTokenStandard();
+
+  const showStandard = args.showStandard ?? true;
+
 
   if (args.ultraPrecision && inpreciseTokenAmount > 0) {
     let precision: number;
@@ -56,7 +60,7 @@ export function formatAVINOCAmount(args: {
   }
 
   const visibleAmount = inpreciseTokenAmount.toFixed(2);
-  return visibleAmount + " AVINOC " + tokenStandard;
+  return visibleAmount + (showStandard ? " AVINOC " : "");
 }
 
 export function formatTokenDollarPrice(args: {

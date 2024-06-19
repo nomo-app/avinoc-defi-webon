@@ -12,9 +12,10 @@ import { SwitchToRewardPageButton } from "@/app/minting/ui/MintingComponents";
 import { StakingTitleBar } from "@/app/minting/ui/MintingComponents";
 import { AvinocAmountInput } from "@/app/minting/ui/MintingComponents";
 import { SelectYears } from "@/app/minting/ui/MintingComponents";
-import { useAvinocPrice } from "@/util/use-avinoc-price";
+import { formatAVINOCAmount, useAvinocPrice } from "@/util/use-avinoc-price";
 import { useEvmAddress } from "@/web3/web3-common";
 import ErrorDetails from "@/common/ErrorDetails";
+import { useTranslation } from "react-i18next";
 import "./MintingPage.scss";
 
 export type PageState = "IDLE" | "PENDING_SUBMIT_TX" | "ERROR_FETCH_FAILED" | StakeError;
@@ -37,6 +38,7 @@ const MintingPage: React.FC = () => {
   const [txError, setTxError] = React.useState<Error | null>(null);
   const networkBonus = !!safirSig;
 
+  const { t } = useTranslation();
   useEffect(() => {
     if (balanceFetchError) {
       setPageState("ERROR_FETCH_FAILED");
@@ -68,7 +70,14 @@ const MintingPage: React.FC = () => {
     setConfirmDialogOpen(true);
   }
 
+  const availableText = avinocBalance !== null && avinocBalance !== undefined
+    ? `${formatAVINOCAmount({
+      tokenAmount: avinocBalance,
+    })} ${t("staking.available")}`
+    : t("staking.loadBalance");
+
   function submitStaking() {
+
     setConfirmDialogOpen(false);
     if (!ethAddress) {
       setPageState("ERROR_CANNOT_PAY_FEE");
@@ -106,19 +115,56 @@ const MintingPage: React.FC = () => {
           <ErrorDetails error={txError} />
         </div>
       )}
-
       <div className="minting-card">
-        <AvinocAmountInput value={avinocAmount} maxValue={avinocBalance} onChange={(value) => setAvinocAmount(value)} />
-        <SelectYears years={years} onChange={handleYearChange} />
+        <div className="minting-input">
+          <h3>{t("staking.amountStaking")}</h3>
+          <AvinocAmountInput value={avinocAmount} maxValue={avinocBalance} onChange={(value) => setAvinocAmount(value)} />
+          <div className="available-amount">
+            {availableText}
+          </div>
+          <h3>{t("reward.stakingPeriod")}</h3>
+        </div>
+        <div className="select-years">
+          <button className={`${years === 1n ? 'selected' : ''}`} onClick={
+            () => {
+              setYears(1n);
+            }
+          }>
+            1 yr
+          </button>
+          <button className={`${years === 3n ? 'selected' : ''}`} onClick={
+            () => {
+              setYears(3n);
+            }
+          }>
+            3 yr
+          </button>
+          <button className={`${years === 5n ? 'selected' : ''}`} onClick={
+            () => {
+              setYears(5n);
+            }
+          }>
+            5 yr
+          </button>
+          <button className={`${years === 10n ? 'selected' : ''}`} onClick={
+            () => {
+              setYears(10n);
+            }
+          }>
+            10 yr
+          </button>
+        </div>
+
+        <div className="minting-reward-prediction-box">
+          <RewardPredictionBox
+            years={years}
+            avinocAmount={avinocAmount}
+            avinocPrice={avinocPrice}
+            networkBonus={networkBonus}
+          />
+        </div>
       </div>
-      <div className="minting-reward-prediction-box">
-        <RewardPredictionBox
-          years={years}
-          avinocAmount={avinocAmount}
-          avinocPrice={avinocPrice}
-          networkBonus={networkBonus}
-        />
-      </div>
+
 
       <div className="minting-footer">
         <StakeButton disabled={isPendingState(pageState)} onClick={onClickStakeButton} />

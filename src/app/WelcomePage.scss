@@ -33,7 +33,7 @@
     width: 100%;
     padding: 1rem;
     border-radius: 0.5rem;
-    background-color: rgb(47, 54, 84);
+    background-color: #283255;
   }
 
   .unclaimed-rewards-card {
@@ -94,7 +94,7 @@
     width: 100%;
     border: none;
     border-radius: 0.5rem;
-    background-color: rgb(102, 168, 164);
+    background-color: #2FAAA5;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -141,44 +141,82 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+  }
 
-    .card {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      width: 100%;
-      border: .1rem solid #3d3c3e;
-      border-radius: 1rem;
-      margin-bottom: 2rem;
+  .card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    border: 0.1rem solid #3d3c3e;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    background-color: rgb(57, 66, 105);
+  }
 
-      background-color: rgb(57, 66, 105);
+  .chainselect-button {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: rgb(57, 66, 105);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: medium;
+    font-weight: bold;
+    padding: 0.4rem;
+    padding-left: 0.5rem;
+  }
 
-      .chainselect-button {
-        // width: 100%;
-        border: none;
-        border-radius: .5rem;
-        background-color: var(--color-primary-button-background);
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        font-size: medium;
-        font-weight: bold;
-        padding: 0.4rem;
 
-        &:hover {
-          background-color: #0056b3;
-        }
 
-        span {
-          display: block;
-          text-align: start;
-        }
+  .chainselect-button-eth {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: rgb(57, 66, 105);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: medium;
+    font-weight: bold;
+    padding: 0.4rem;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    padding-left: 0.5rem;
+  }
 
-        .span-divider {
-          height: 0.5rem;
-        }
-      }
-    }
+  .selected {
+    background-color: #2FAAA5
+  }
+
+  .chainselect-logo {
+    margin-right: 0.5rem;
+  }
+
+  .chainselect-text-eth {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+
+  .chainselect-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chainselect-button span {
+    display: block;
+    text-align: start;
+  }
+
+  .span-divider {
+    height: 0.5rem;
   }
 
   .welcome-page-footer {

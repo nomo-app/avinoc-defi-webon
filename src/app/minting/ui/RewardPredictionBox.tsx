@@ -10,6 +10,7 @@ import {
   formatAVINOCAmount,
   formatTokenDollarPrice,
 } from "@/util/use-avinoc-price";
+import { avinoc } from "@/asset-paths";
 
 export const RewardPredictionBox: React.FC<{
   years: bigint;
@@ -43,7 +44,7 @@ export const RewardPredictionBox: React.FC<{
       return t("staking.enterAmount");
     } else {
       const rewards = getRewardAmount(years);
-      return formatAVINOCAmount({ tokenAmount: rewards });
+      return formatAVINOCAmount({ tokenAmount: rewards, showStandard: false });
     }
   }
 
@@ -105,6 +106,22 @@ export const RewardPredictionBox: React.FC<{
         <div
           style={{
             display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-end",
+            justifyContent: "left",
+            rowGap: ".5rem",
+          }}
+        >
+          {isMaxYears ? (
+            <div style={{ display: "none" }} />
+          ) : (
+            <AvinocRewardLabel label={getRewardLabel(props.years)} />
+          )}
+          <AvinocRewardLabel label={getRewardLabel(maxYears)} />
+        </div>
+        <div
+          style={{
+            display: "flex",
             flexDirection: "column",
             alignItems: "flex-end",
             rowGap: ".5rem",
@@ -118,23 +135,6 @@ export const RewardPredictionBox: React.FC<{
             <AvinocYearsLabel label={getYearsName(props.years)} />
           )}
           <AvinocYearsLabel label={getYearsName(maxYears)} />
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-end",
-            justifyContent: "left",
-            rowGap: ".5rem",
-          }}
-        >
-          {isMaxYears ? (
-            <div style={{ display: "none" }} />
-          ) : (
-            <AvinocRewardLabel label={getRewardLabel(props.years)} />
-          )}
-          <AvinocRewardLabel label={getRewardLabel(maxYears)} />
         </div>
 
         <div
@@ -157,6 +157,6 @@ export const RewardPredictionBox: React.FC<{
           <AvinocDollarRewardLabel label={getRewardDollarPrice(maxYears)} />
         </div>
       </div>
-    </Card>
+    </Card >
   );
 };
