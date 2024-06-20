@@ -24,7 +24,7 @@ export const getNomoEvmNetwork = (): NomoEvmNetwork => {
   const searchParams = getSearchParams();
   const network = searchParams.get("network");
   if (!network) {
-    throw new Error("Network not found in URL");
+    return "ethereum"
   }
   return network as NomoEvmNetwork;
 };
