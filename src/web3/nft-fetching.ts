@@ -3,9 +3,10 @@ import { getNomoEvmNetwork } from "./navigation";
 import { getStakingContract, getStakingContractAddress } from "./web3-minting";
 import { NomoEvmNetwork, nomo, isFallbackModeActive } from "nomo-webon-kit";
 
-export async function fetchStakingTokenIDs(args: {
-  ethAddress: string;
-}): Promise<Array<bigint>> {
+export async function fetchStakingTokenIDs(
+  args: {
+    ethAddress: string;
+  }): Promise<Array<bigint>> {
   if (isFallbackModeActive()) {
     return await fetchStakingTokenIDsFallback(args);
   }
@@ -102,11 +103,11 @@ async function fetchOwnedTokenIDsByEnumeratingAllTokens(args: {
   let idCandidate: bigint = getFirstPossibleTokenID();
   console.log(
     args.ethAddress +
-      ": Starting search for owned tokenIDs between the IDs " +
-      idCandidate +
-      " and " +
-      lastPossibleNFTId +
-      "..."
+    ": Starting search for owned tokenIDs between the IDs " +
+    idCandidate +
+    " and " +
+    lastPossibleNFTId +
+    "..."
   );
   while (idCandidate < lastPossibleNFTId) {
     const batchSize: bigint = minimumBigInt(

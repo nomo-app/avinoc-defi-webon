@@ -17,6 +17,7 @@ export const RewardPredictionBox: React.FC<{
   avinocAmount: bigint;
   avinocPrice: number | null;
   networkBonus: boolean;
+  network: string;
 }> = (props) => {
   const { t } = useTranslation();
 
@@ -69,7 +70,7 @@ export const RewardPredictionBox: React.FC<{
   }
 
   const maxYears = 10n;
-  const isMaxYears: boolean = props.years === maxYears;
+  // const isMaxYears: boolean = props.years === maxYears;
 
   return (
     <Card
@@ -77,13 +78,13 @@ export const RewardPredictionBox: React.FC<{
       elevation={0}
       style={{
         width: "100%",
-        margin: "1rem",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center"
+        justifyContent: "center",
+        borderRadius: "10px",
       }}
       sx={{
-        backgroundColor: '#13111a',
+        backgroundColor: '#323F6B',
       }}
     >
       {/*row 1 network bonus*/}
@@ -94,30 +95,52 @@ export const RewardPredictionBox: React.FC<{
         style={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-evenly",
-          alignItems: "center",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
           width: "100%",
           padding: "1rem",
-          minHeight: "1rem",
+          // minHeight: "1rem",
           color: "white",
-          marginTop: ".25rem",
+          // marginTop: ".25rem",
         }}
       >
         <div
           style={{
             display: "flex",
             flexDirection: "row",
-            alignItems: "flex-end",
-            justifyContent: "left",
+            alignItems: "start",
+            justifyContent: "center",
             rowGap: ".5rem",
           }}
         >
-          {isMaxYears ? (
-            <div style={{ display: "none" }} />
-          ) : (
+          {/* {isMaxYears ? ( */}
+          <div style={{ display: "none" }} />
+          {/* ) : ( */}
+          <img src={avinoc} alt="AVINOC" style={{ width: "2rem", paddingRight: ".5rem" }} />
+          {/* )} */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              rowGap: ".2rem",
+              justifyContent: "center",
+              fontSize: "medium",
+              // paddingTop: ".1rem",
+              fontWeight: "bold",
+            }}>
             <AvinocRewardLabel label={getRewardLabel(props.years)} />
-          )}
-          <AvinocRewardLabel label={getRewardLabel(maxYears)} />
+            <div style={{
+              fontSize: "small",
+              fontWeight: "bold",
+              color: "#D2D2D2",
+            }}>
+              {props.network}
+            </div>
+          </div>
+
+          {/* )} */}
+          {/* <AvinocRewardLabel label={getRewardLabel(maxYears)} /> */}
         </div>
         <div
           style={{
@@ -129,12 +152,12 @@ export const RewardPredictionBox: React.FC<{
             fontSize: "1rem"
           }}
         >
-          {isMaxYears ? (
+          {/* {isMaxYears ? (
             <div style={{ display: "none" }} />
-          ) : (
-            <AvinocYearsLabel label={getYearsName(props.years)} />
-          )}
-          <AvinocYearsLabel label={getYearsName(maxYears)} />
+          ) : ( */}
+          <AvinocYearsLabel label={getYearsName(props.years)} />
+          {/* )} */}
+          {/* <AvinocYearsLabel label={getYearsName(maxYears)} /> */}
         </div>
 
         <div
@@ -147,14 +170,14 @@ export const RewardPredictionBox: React.FC<{
             flexShrink: "10",
           }}
         >
-          {isMaxYears ? (
-            <div style={{ display: "none" }} />
-          ) : (
-            <AvinocDollarRewardLabel
-              label={getRewardDollarPrice(props.years)}
-            />
-          )}
-          <AvinocDollarRewardLabel label={getRewardDollarPrice(maxYears)} />
+          {/* {isMaxYears ? ( */}
+          <div style={{ display: "none" }} />
+          {/* ) : ( */}
+          <AvinocDollarRewardLabel
+            label={getRewardDollarPrice(props.years)}
+          />
+          {/* )} */}
+          {/* <AvinocDollarRewardLabel label={getRewardDollarPrice(maxYears)} /> */}
         </div>
       </div>
     </Card >

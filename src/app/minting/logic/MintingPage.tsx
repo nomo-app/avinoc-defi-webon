@@ -17,6 +17,7 @@ import { useEvmAddress } from "@/web3/web3-common";
 import ErrorDetails from "@/common/ErrorDetails";
 import { useTranslation } from "react-i18next";
 import "./MintingPage.scss";
+import { getTokenStandard } from "@/web3/navigation";
 
 export type PageState = "IDLE" | "PENDING_SUBMIT_TX" | "ERROR_FETCH_FAILED" | StakeError;
 
@@ -38,6 +39,8 @@ const MintingPage: React.FC = () => {
   const [txError, setTxError] = React.useState<Error | null>(null);
   const networkBonus = !!safirSig;
 
+
+  console.log("url", window.location.href);
   const { t } = useTranslation();
   useEffect(() => {
     if (balanceFetchError) {
@@ -69,6 +72,9 @@ const MintingPage: React.FC = () => {
     }
     setConfirmDialogOpen(true);
   }
+
+  const tokenStandard = getTokenStandard();
+  console.log("tokenStandard", tokenStandard);
 
   const availableText = avinocBalance !== null && avinocBalance !== undefined
     ? `${formatAVINOCAmount({
@@ -161,15 +167,17 @@ const MintingPage: React.FC = () => {
             avinocAmount={avinocAmount}
             avinocPrice={avinocPrice}
             networkBonus={networkBonus}
+            network={tokenStandard}
           />
+        </div>
+
+        <div className="minting-footer">
+          <StakeButton disabled={isPendingState(pageState)} onClick={onClickStakeButton} />
+          {/* <SwitchToRewardPageButton disabled={isPendingState(pageState)} /> */}
         </div>
       </div>
 
 
-      <div className="minting-footer">
-        <StakeButton disabled={isPendingState(pageState)} onClick={onClickStakeButton} />
-        <SwitchToRewardPageButton disabled={isPendingState(pageState)} />
-      </div>
 
       <ConfirmDialogSlide
         isOpen={confirmDialogOpen}

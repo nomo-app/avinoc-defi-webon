@@ -95,10 +95,12 @@ export const StakeButton: React.FC<{
       disabled={props.disabled}
       onClick={() => props.disabled || props.onClick()}
       style={{
+        fontSize: "1.5rem !important",
+        fontWeight: "bold",
         color: props.disabled ? "white" : undefined,
         backgroundColor: props.disabled
           ? "grey"
-          : "var(--color-primary-button-background)",
+          : "#2FAAA5",
       }}
     >
       <div
@@ -411,8 +413,9 @@ export const BonusBox: React.FC<{ apyLabel: string; networkBonus: boolean }> = (
           flexDirection: "row",
           justifyContent: "center",
           minHeight: "1rem",
+          padding: ".5rem",
           fontWeight: "bold",
-          color: "black",
+          color: "white",
           fontSize: "medium",
           background: "var(--color-warning)",
           borderRadius: ".25rem",

@@ -1,17 +1,154 @@
 import "@/util/i18n";
 import { avinocDeFiLogo, ethLogo, zeniqLogo } from "@/asset-paths";
-import { navigateToMintingPage } from "@/web3/navigation";
+import { navigateToClaimingPage, navigateToMintingPage } from "@/web3/navigation";
 import { nomo } from "nomo-webon-kit";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./minting/ui/MintingPage.css";
 import "./WelcomePage.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useEvmAddress } from "@/web3/web3-common";
+import { fetchStakingTokenIDs } from "@/web3/nft-fetching";
+import ErrorDetails from "@/common/ErrorDetails";
+import { StakingNft, computeUnclaimedRewards, fetchStakingNft, submitClaimTransaction } from "@/web3/web3-minting";
+import { CongratDialogSlide } from "./minting/ui/CongratDialog";
+import { formatAVINOCAmount, formatTokenDollarPrice, useAvinocPrice } from "@/util/use-avinoc-price";
+import { useTranslation } from "react-i18next";
+
+export type PageState =
+  | "PENDING_TOKENID_FETCH"
+  | "PENDING_DETAILS_FETCH"
+  | "PENDING_SUBMIT_TX"
+  | "IDLE"
+  | "ERROR_NO_NFTS_CLAIM"
+  | "ERROR_CANNOT_PAY_FEE"
+  | "ERROR_TX_FAILED"
+  | "ERROR_FETCH_FAILED";
+
+export function isPendingState(pageState: PageState) {
+  return pageState.startsWith("PENDING");
+}
+
+export function isErrorState(pageState: PageState) {
+
+  console.error("pageState", pageState);
+  return pageState.startsWith("ERROR");
+}
+
 
 export default function Home() {
   const navigate = useNavigate();
-
+  const { evmAddress } = useEvmAddress();
   const [chain, setChain] = useState('ethereum');
+  const location = useLocation();
+  const [pageState, setPageState] = useState<PageState>(
+    "PENDING_TOKENID_FETCH"
+  );
+  const { t } = useTranslation();
+  const avinocPrice = useAvinocPrice();
+  const [tokenIDs, setTokenIDs] = useState<Array<bigint>>([]);
+  const [fetchError, setFetchError] = useState<Error | null>(null);
+  const [stakingNFTs, setStakingNFTs] = useState<
+    Record<string, StakingNft>
+  >({});
+  const [congratDialogOpen, setCongratDialogOpen] = useState(false);
 
+  const updateUrlWithChain = (currentChain: string) => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("network", currentChain);
+    navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+  };
+
+  const [totalUnclaimedRewards, setTotalUnclaimedRewards] = useState<bigint>(0n);
+
+  useEffect(() => {
+    updateUrlWithChain(chain);
+  }, [chain]);
+
+  console.log("url", window.location.href);
+  useEffect(() => {
+
+    if (evmAddress) {
+      fetchStakingTokenIDs({ ethAddress: evmAddress })
+        .then((tokenIDs: any) => {
+          if (tokenIDs.length) {
+            setPageState("PENDING_DETAILS_FETCH");
+          } else {
+            setPageState("ERROR_NO_NFTS_CLAIM");
+          }
+          tokenIDs.sort((a: bigint, b: bigint) => Number(a - b));
+          setTokenIDs(tokenIDs);
+        })
+        .catch((e) => {
+          console.error(e);
+          setFetchError(e);
+          setPageState("ERROR_FETCH_FAILED");
+        });
+    }
+  }, [evmAddress, chain]);
+
+  useEffect(() => {
+    tokenIDs.forEach((tokenId) => {
+      fetchStakingNft({ tokenId })
+        .then((stakingNft: any) => {
+          setStakingNFTs((prevStakingNFTs) => {
+            return {
+              ...prevStakingNFTs,
+              ["" + tokenId]: stakingNft,
+            };
+          });
+          setPageState("IDLE");
+        })
+        .catch((e: any) => {
+          setPageState("ERROR_FETCH_FAILED");
+          console.error(e);
+        });
+    });
+  }, [tokenIDs]);
+
+  console.log("evmAddress", evmAddress);
+  console.log("fetchError", fetchError);
+
+  useEffect(() => {
+    const totalRewards = Object.values(stakingNFTs).reduce((total, nft) => {
+      return total + computeUnclaimedRewards(nft);
+    }, 0n);
+    setTotalUnclaimedRewards(totalRewards);
+  }, [stakingNFTs]);
+
+  console.log("totalUnclaimedRewards", totalUnclaimedRewards);
+
+  function doClaim(args: { tokenIDs: Array<bigint> }) {
+    if (!evmAddress) {
+      setPageState("ERROR_CANNOT_PAY_FEE");
+      return;
+    }
+    setPageState("PENDING_SUBMIT_TX");
+    submitClaimTransaction({ tokenIDs: args.tokenIDs, ethAddress: evmAddress })
+      .then((error: any) => {
+        if (error) {
+          setPageState(error);
+        } else {
+          setPageState("IDLE");
+          setCongratDialogOpen(true);
+        }
+      })
+      .catch((e) => {
+        setPageState("ERROR_TX_FAILED");
+        console.error(e);
+      });
+  }
+  function onClickClaim(stakingNft: StakingNft) {
+    doClaim({ tokenIDs: [stakingNft.tokenId] });
+  }
+
+  function onClickClaimAll() {
+    const allNFTs: StakingNft[] = Object.values(stakingNFTs);
+    const claimableNFTs = allNFTs.filter(
+      (nft) => nft.lastClaim.getTime() < nft.end.getTime()
+    );
+    const tokenIDs: bigint[] = claimableNFTs.map((nft) => nft.tokenId);
+    doClaim({ tokenIDs });
+  }
   return (
     <div className="welcome-page-content">
       <div className="welcome-page-header">
@@ -50,12 +187,15 @@ export default function Home() {
           </div>
         </div>
         <div className="unclaimed-rewards-card">
-          <h3>Unclaimed Rewards</h3>
+          {!!fetchError && <ErrorDetails error={fetchError} />}
+          <h3>   {t("reward.unclaimedRewards")}</h3>
           <div className="unclaimed-rewards-amount">
-            0.024855 {chain === "ethereum" ? "AVINOC ERC20" : "AVINOC ZEN20"}</div>
-          <div className="unclaimed-rewards-amount-currency">$0.4</div>
-          <button className="claim-all-button">
-            Claim All
+            {formatAVINOCAmount({ tokenAmount: totalUnclaimedRewards })} {chain === "ethereum" ? "ERC20" : "ZEN20"}</div>
+          <div className="unclaimed-rewards-amount-currency">{formatTokenDollarPrice({ tokenAmount: totalUnclaimedRewards, tokenPrice: avinocPrice.avinocPrice })}</div>
+          <button className="claim-all-button" onClick={() => {
+            onClickClaimAll();
+          }}>
+            {t("reward.claimAll")}
           </button>
         </div>
         <button className="stake-button" onClick={() => {
@@ -68,7 +208,7 @@ export default function Home() {
         }}>
           Stake {chain === "ethereum" ? "ERC20" : "ZEN20"}
         </button>
-        <button className="view-staking-button">
+        <button className="view-staking-button" onClick={() => navigateToClaimingPage(navigate)}>
           View Staking NFT's
         </button>
         <div className="welcome-page-footer">
@@ -87,6 +227,13 @@ export default function Home() {
           </button>
         </div>
       </div>
+      <CongratDialogSlide
+        isOpen={congratDialogOpen}
+        handleClose={() => {
+          setCongratDialogOpen(false);
+        }}
+        translationKey={"reward.DialogSuccess"}
+      />
     </div>
   );
 }
