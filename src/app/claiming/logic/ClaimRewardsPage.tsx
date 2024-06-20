@@ -15,12 +15,13 @@ import { useEvmAddress } from "@/web3/web3-common";
 import {
   ClaimAllButton,
   StakingNftBox,
-  TitleBox,
+  // TitleBox,
 } from "../ui/ClaimRewardsComponents";
-import { claimRewardsMainFlexBox } from "../ui/claim-style";
+import { centeredTitleContainer, claimRewardTitle, claimRewardsMainFlexBox } from "../ui/claim-style";
 import { fetchStakingTokenIDs } from "@/web3/nft-fetching";
 import ErrorDetails from "@/common/ErrorDetails";
 import { getNFTID, getNomoEvmNetwork } from "@/web3/navigation";
+import BackButton from "@/common/BackButton";
 
 export type PageState =
   | "PENDING_TOKENID_FETCH"
@@ -134,11 +135,18 @@ const ClaimRewardsPage: React.FC = () => {
   const nftID = getNFTID();
   const selectedNFT = nftID ? stakingNFTs[Number(nftID)] : undefined;
   console.log("selectedNFT", selectedNFT);
-
+  const { t } = useTranslation();
   return (
     <div style={claimRewardsMainFlexBox}>
-      <div style={{ flexGrow: "10" }} />
-      <TitleBox showBackButton={!selectedNFT} />
+      {/* <div style={{ flexGrow: "10" }} /> */}
+      {/* <TitleBox showBackButton={!selectedNFT} /> */}
+      <div style={claimRewardTitle}>
+        <BackButton />
+        <div style={centeredTitleContainer}>
+          <span>{t("reward.claimRewards")}</span>
+        </div>
+      </div>
+
       {pageState === "IDLE" ? (
         <div />
       ) : (
@@ -168,14 +176,14 @@ const ClaimRewardsPage: React.FC = () => {
               />
             );
           })}
-          {Object.values(stakingNFTs).length >= 1 ? (
+          {/* {Object.values(stakingNFTs).length >= 1 ? (
             <ClaimAllButton
               disabled={isPendingState(pageState)}
               onClick={onClickClaimAll}
             />
           ) : (
             <div />
-          )}
+          )} */}
         </div>
       )}
 

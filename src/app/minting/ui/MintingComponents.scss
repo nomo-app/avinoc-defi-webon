@@ -1,14 +1,14 @@
 .minting-page-button {
-  margin: .5rem;
   padding: 1rem;
+  width: 100%;
   border: none;
   border-radius: .5rem;
-  background-color: var(--color-primary-button-background);
+  background-color: #2FAAA5;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
   &:hover {
-      background-color: #0056b3;
+    background-color: #0056b3;
   }
 }

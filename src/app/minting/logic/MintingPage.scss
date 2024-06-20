@@ -1,10 +1,11 @@
 .minting-page-content {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  // justify-content: space-between;
   width: 100%;
   height: 100vh;
   font-family: 'Helvetica';
+  background-color: #1D2140;
 
   .staking-title-bar {
     margin: 1rem;
@@ -15,27 +16,79 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: .1rem solid #3d3c3e;
-    border-radius: 1rem;
-    background-color: #13111a;
+    border-radius: 10px;
+    background-color: #283255;
+    padding: 1rem;
     margin: 1rem;
+
+    .select-years {
+      width: 100%;
+      padding-top: 1rem;
+      display: flex;
+      padding-bottom: 1rem;
+      flex-direction: row;
+      justify-content: space-between;
+
+      button {
+        padding: 0.7rem;
+        width: 5.2rem;
+        border-radius: 30px;
+        border: none;
+        font-weight: bold;
+        font-size: large;
+        color: black;
+        background-color: #E8E8E8;
+      }
+
+      .selected {
+        background-color: #2FAAA5;
+        color: white;
+        border: .1rem solid white;
+      }
+    }
+
   }
+
+  .minting-input {
+    width: 100%;
+
+    h3 {
+      color: #D2D2D2;
+      font-weight: normal;
+    }
+
+    .available-amount {
+      display: inline-block;
+      margin-top: 1rem;
+      border-radius: 20px;
+      background-color: #2FAAA5;
+      color: white;
+      font-weight: 300;
+      padding: 0.5rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      margin-bottom: 2rem;
+      font-size: small;
+
+    }
+  }
+
 
   .minting-reward-prediction-box {
     display: flex;
+    width: 100%;
     flex-direction: row;
     justify-content: center;
-    border: .1rem solid #3d3c3e;
-    border-radius: 1rem;
-    background-color: #13111a;
+    border-radius: 10px;
+    background-color: #323F6B;
     margin: 1rem;
   }
 
   .minting-footer {
     display: flex;
-    flex-direction: column;
+    width: 100%;
+    color: #2FAAA5;
     justify-content: center;
-    margin: 1rem;
   }
 
   .minting-status-box {
@@ -53,4 +106,3 @@
   }
 
 }
-

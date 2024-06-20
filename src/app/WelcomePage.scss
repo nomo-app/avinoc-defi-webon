@@ -4,22 +4,135 @@
   width: 100%;
   height: 100vh;
   padding: 2rem;
+  background-color: #1D2140;
   font-family: 'Helvetica';
 
   .welcome-page-header {
     display: flex;
-    flex-direction: column;
-    justify-content: end;
+    flex-direction: row;
     align-items: center;
+    justify-content: start;
+    margin-bottom: 1rem;
 
     img {
       width: 20%;
-      margin-bottom: 1rem;
+      padding-right: 1rem;
     }
 
-    h1 {
+    h2 {
       font-size: 2rem;
       color: white;
+    }
+  }
+
+  .cardBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: #283255;
+  }
+
+  .unclaimed-rewards-card {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    width: 100%;
+    border-radius: 0.5rem;
+    background-color: rgb(57, 66, 105);
+    padding: 1rem;
+
+    h3 {
+      color: rgb(195, 196, 200);
+      font-weight: normal;
+    }
+
+    .unclaimed-rewards-amount {
+      color: white;
+      padding-top: 1rem;
+      padding-bottom: 0.5rem;
+      font-size: large;
+      font-weight: bold;
+    }
+
+    .unclaimed-rewards-amount-currency {
+      color: rgb(195, 196, 200);
+      padding-bottom: 1rem;
+      font-size: large;
+      font-weight: bold;
+    }
+
+    .claim-all-button {
+      padding: 0.7rem;
+      width: 100%;
+      border: none;
+      border-radius: 0.5rem;
+      background-color: rgb(232, 232, 232);
+      color: rgb(102, 168, 164);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: large;
+      font-weight: bold;
+      display: flex;
+      padding: 1rem;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+
+      &:hover {
+        background-color: #484b55;
+      }
+    }
+  }
+
+  .stake-button {
+    padding: 0.7rem;
+    width: 100%;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #2FAAA5;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: large;
+    font-weight: bold;
+    display: flex;
+    padding: 1rem;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+
+    &:hover {
+      background-color: #484b55;
+    }
+  }
+
+  .view-staking-button {
+    padding: 0.7rem;
+    width: 100%;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: rgb(43, 45, 57);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: large;
+    font-weight: bold;
+    display: flex;
+    padding: 1rem;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    &:hover {
+      background-color: #484b55;
     }
   }
 
@@ -27,70 +140,123 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+  }
 
-    .card {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      width: 100%;
-      border: .1rem solid #3d3c3e;
-      border-radius: 1rem;
-      margin-top: 2rem;
-      margin-bottom: 2rem;
-      background-color: #fcfaf7ff;
+  .card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    border: 0.1rem solid #3d3c3e;
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    background-color: rgb(57, 66, 105);
+  }
 
-      .chainselect-button {
-        margin: 1rem;
-        padding: 1rem;
-        border: none;
-        border-radius: .5rem;
-        background-color: var(--color-primary-button-background);
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        font-size: medium;
-        font-weight: bold;
+  .chainselect-button {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: rgb(57, 66, 105);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: medium;
+    font-weight: bold;
+    padding: 0.4rem;
+    padding-left: 0.5rem;
+  }
 
-        &:hover {
-            background-color: #0056b3;
-        }
-      }
-    }
+
+
+  .chainselect-button-eth {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: rgb(57, 66, 105);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: medium;
+    font-weight: bold;
+    padding: 0.4rem;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    padding-left: 0.5rem;
+  }
+
+  .selected {
+    background-color: #2FAAA5
+  }
+
+  .chainselect-logo {
+    margin-right: 0.5rem;
+  }
+
+  .chainselect-text-eth {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+
+  .chainselect-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chainselect-button span {
+    display: block;
+    text-align: start;
+  }
+
+  .span-divider {
+    height: 0.5rem;
   }
 
   .welcome-page-footer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
+    width: 100%;
+  }
 
-    .migration-info {
-      display: flex;
-      justify-content: center;
-      font-size: small;
-      font-family: 'Helvetica';
+  .migrate-button-divider {
+    width: 0.5rem;
+  }
+
+  .migrate-button {
+    padding: 0.7rem;
+    width: 50%;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: rgb(45, 49, 74);
+    color: rgb(102, 168, 164);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: small;
+    font-weight: bold;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    &:hover {
+      background-color: #484b55;
     }
+  }
 
-    .container {
-      display: flex;
-      flex-direction: column;
-
-      .migrate-button {
-        margin: 1rem;
-        margin-bottom: 0;
-        padding: 0.7rem;
-        border: none;
-        border-radius: .5rem;
-        background-color: var(--color-primary-button-background);
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        font-size: medium;
-        font-weight: bold;
-  
-        &:hover {
-          background-color: #484b55;
-        }
-      }
-    }
+  .migration-info {
+    padding-top: 0.5rem;
+    font-size: small;
+    color: rgb(119, 120, 124);
+    font-family: 'Helvetica';
+    text-align: left;
+    width: 100%;
   }
 }

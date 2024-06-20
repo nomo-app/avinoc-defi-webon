@@ -13,7 +13,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { UnreachableCaseError } from "@/util/typesafe";
 
-import { avinocIcon } from "@/asset-paths";
+import { avinoc, avinocIcon } from "@/asset-paths";
 import { PageState } from "../logic/MintingPage";
 import BackButton from "@/common/BackButton";
 import { getNomoEvmNetwork, getTokenStandard, navigateToClaimingPage } from "@/web3/navigation";
@@ -95,10 +95,12 @@ export const StakeButton: React.FC<{
       disabled={props.disabled}
       onClick={() => props.disabled || props.onClick()}
       style={{
+        fontSize: "1.5rem !important",
+        fontWeight: "bold",
         color: props.disabled ? "white" : undefined,
         backgroundColor: props.disabled
           ? "grey"
-          : "var(--color-primary-button-background)",
+          : "#2FAAA5",
       }}
     >
       <div
@@ -152,6 +154,8 @@ export const SwitchToRewardPageButton: React.FC<{
 };
 export const StakingTitleBar: React.FC = () => {
   const tokenStandard = getTokenStandard();
+  const chain = tokenStandard === "ERC20" ? "(Ethereum)" : "(ZENIQ Smartchain)";
+
 
   return (
     <div
@@ -159,12 +163,11 @@ export const StakingTitleBar: React.FC = () => {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
       }}
     >
       <BackButton />
       <div style={{ fontWeight: "bold", fontSize: "large" }}>
-        {"AVINOC " + tokenStandard + " Staking"}
+        {"Stake " + tokenStandard + " " + chain}
       </div>
     </div>
   );
@@ -200,13 +203,6 @@ export const AvinocAmountInput: React.FC<{
     props.onChange(bigintValue);
   };
 
-  const availableText =
-    props.maxValue !== null && props.maxValue !== undefined
-      ? `${t("staking.available")}: ${formatAVINOCAmount({
-          tokenAmount: props.maxValue,
-        })}`
-      : t("staking.loadBalance");
-
   const isError = props.value <= INPUT_ERROR_TRHESHOLD;
 
   const userVisibleProp = props.value >= 0 ? Number(props.value) / 1e18 : "";
@@ -214,25 +210,21 @@ export const AvinocAmountInput: React.FC<{
   return (
     <TextField
       id="textfield_outline"
-      helperText={availableText}
-      label={t("staking.amountStaking")}
       variant="outlined"
       type={"number"}
       style={{
-        width: "90%",
-        marginLeft: "1rem",
-        marginRight: "1rem",
-        marginTop: "2rem",
+        width: "100%",
+        marginTop: "1rem",
       }}
       sx={{
         input: { color: "white" },
         label: { color: "white" },
         "& .MuiOutlinedInput-root": {
           "& fieldset": {
-            borderColor: "white",
+            borderColor: "#D2D2D2",
           },
           "&:hover fieldset": {
-            borderColor: "white",
+            borderColor: "#D2D2D2",
           },
           "&.Mui-focused fieldset": {
             borderColor: "white",
@@ -251,6 +243,9 @@ export const AvinocAmountInput: React.FC<{
         "& .MuiInput-underline:after": {
           // underline color when textfield is focused
           borderBottomColor: "white",
+        },
+        '& .MuiInputBase-input': {
+          caretColor: '#2FAAA5',
         },
       }}
       error={isError}
@@ -273,7 +268,7 @@ export const AvinocAmountInput: React.FC<{
         startAdornment: (
           <InputAdornment position="start">
             <img
-              src={avinocIcon}
+              src={avinoc}
               className="Zeniq-Logo"
               alt="logo"
               style={{ width: 25, height: 25 }}
@@ -296,7 +291,7 @@ export const SelectYears: React.FC<{
       sx={{ m: 1 }}
       style={{ width: "90%", marginTop: "2rem", marginBottom: "2rem" }}
     >
-      <InputLabel
+      {/* <InputLabel
         id="stakingTimeTitle"
         sx={{
           color: "white",
@@ -305,9 +300,9 @@ export const SelectYears: React.FC<{
         }}
       >
         {t("reward.stakingPeriod")}
-      </InputLabel>
+      </InputLabel> */}
       <Select
-        label="Staking Time"
+        // label="Staking Time"
         value={"" + props.years}
         onChange={props.onChange}
         style={{ fontWeight: "bold" }}
@@ -418,8 +413,9 @@ export const BonusBox: React.FC<{ apyLabel: string; networkBonus: boolean }> = (
           flexDirection: "row",
           justifyContent: "center",
           minHeight: "1rem",
+          padding: ".5rem",
           fontWeight: "bold",
-          color: "black",
+          color: "white",
           fontSize: "medium",
           background: "var(--color-warning)",
           borderRadius: ".25rem",

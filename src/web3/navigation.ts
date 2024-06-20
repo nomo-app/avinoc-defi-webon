@@ -15,9 +15,9 @@ export function navigateToClaimingPage(navigate: NavigateFunction) {
 }
 
 function getSearchParams() {
-    const url = window.location.href;
-    const searchParams = new URLSearchParams(url.split("?")[1]);
-    return searchParams;
+  const url = window.location.href;
+  const searchParams = new URLSearchParams(url.split("?")[1]);
+  return searchParams;
 }
 
 export const getNomoEvmNetwork = (): NomoEvmNetwork => {
