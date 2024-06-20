@@ -21,12 +21,22 @@ export const claimRewardTitle: CSSProperties = {
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
-  justifyContent: "space-between",
+  position: "relative",
+  width: "100%",
   color: "white",
   fontWeight: "bold",
   fontSize: "1.4rem",
   marginTop: "1rem",
-  marginLeft: "1rem",
+  marginLeft: "1.1rem",
+};
+
+export const centeredTitleContainer: CSSProperties = {
+  position: "absolute",
+  left: "50%",
+  transform: "translateX(-50%)",
+  textAlign: "center",
+  width: "100%",
+  pointerEvents: "none",
 };
 
 export const listTitle: CSSProperties = {

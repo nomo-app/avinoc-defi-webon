@@ -17,7 +17,7 @@ import {
   StakingNftBox,
   // TitleBox,
 } from "../ui/ClaimRewardsComponents";
-import { claimRewardTitle, claimRewardsMainFlexBox } from "../ui/claim-style";
+import { centeredTitleContainer, claimRewardTitle, claimRewardsMainFlexBox } from "../ui/claim-style";
 import { fetchStakingTokenIDs } from "@/web3/nft-fetching";
 import ErrorDetails from "@/common/ErrorDetails";
 import { getNFTID, getNomoEvmNetwork } from "@/web3/navigation";
@@ -142,7 +142,9 @@ const ClaimRewardsPage: React.FC = () => {
       {/* <TitleBox showBackButton={!selectedNFT} /> */}
       <div style={claimRewardTitle}>
         <BackButton />
-        <span style={{ flexGrow: 1, textAlign: "center" }}>{t("reward.claimRewards")}</span>
+        <div style={centeredTitleContainer}>
+          <span>{t("reward.claimRewards")}</span>
+        </div>
       </div>
 
       {pageState === "IDLE" ? (
