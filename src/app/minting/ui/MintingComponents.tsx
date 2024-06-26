@@ -21,6 +21,8 @@ import { formatAVINOCAmount } from "@/util/use-avinoc-price";
 import { useNavigate } from "react-router-dom";
 import "./MintingComponents.scss";
 
+
+
 export function isErrorState(pageState: PageState) {
   return pageState.startsWith("ERROR");
 }
@@ -406,23 +408,23 @@ export const BonusBox: React.FC<{ apyLabel: string; networkBonus: boolean }> = (
       </div>
     );
   } else {
-    return (
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          minHeight: "1rem",
-          padding: ".5rem",
-          fontWeight: "bold",
-          color: "white",
-          fontSize: "medium",
-          background: "var(--color-warning)",
-          borderRadius: ".25rem",
-        }}
-      >
-        <div>{t("staking.networkBonus") + ": " + props.apyLabel}</div>
-      </div>
-    );
+    // return (
+    //   <div
+    //     style={{
+    //       display: "flex",
+    //       flexDirection: "row",
+    //       justifyContent: "center",
+    //       minHeight: "1rem",
+    //       padding: ".5rem",
+    //       fontWeight: "bold",
+    //       color: "white",
+    //       fontSize: "medium",
+    //       background: "var(--color-warning)",
+    //       borderRadius: ".25rem",
+    //     }}
+    //   >
+    //     <div>{t("staking.networkBonus") + ": " + props.apyLabel}</div>
+    //   </div>
+    // );
   }
 };

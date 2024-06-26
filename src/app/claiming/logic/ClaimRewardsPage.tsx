@@ -143,7 +143,7 @@ const ClaimRewardsPage: React.FC = () => {
       <div style={claimRewardTitle}>
         <BackButton />
         <div style={centeredTitleContainer}>
-          <span>{t("reward.claimRewards")}</span>
+          <span>Staking NFTs</span>
         </div>
       </div>
 
@@ -200,7 +200,7 @@ const ClaimRewardsPage: React.FC = () => {
   );
 };
 
-const StatusBox: React.FC<{ pageState: PageState }> = (props) => {
+export const StatusBox: React.FC<{ pageState: PageState }> = (props) => {
   const { t } = useTranslation();
   function getStatusMessage() {
     switch (props.pageState) {
@@ -222,8 +222,9 @@ const StatusBox: React.FC<{ pageState: PageState }> = (props) => {
     }
   }
   if (isErrorState(props.pageState)) {
+    console.log("getStatusMessage", getStatusMessage());
     return (
-      <div style={{ margin: "10px" }}>
+      <div style={{}}>
         <Alert severity={"error"}>{getStatusMessage()}</Alert>
       </div>
     );
@@ -236,6 +237,7 @@ const StatusBox: React.FC<{ pageState: PageState }> = (props) => {
           marginBottom: "5px",
         }}
       >
+
         <CircularProgress />
         <div
           style={{

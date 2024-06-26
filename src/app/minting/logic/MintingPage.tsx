@@ -172,7 +172,7 @@ const MintingPage: React.FC = () => {
         </div>
 
         <div className="minting-footer">
-          <StakeButton disabled={isPendingState(pageState)} onClick={onClickStakeButton} />
+          <StakeButton disabled={isPendingState(pageState) || avinocAmount <= 0n || avinocBalance == 0n} onClick={onClickStakeButton} />
           {/* <SwitchToRewardPageButton disabled={isPendingState(pageState)} /> */}
         </div>
       </div>
@@ -182,6 +182,7 @@ const MintingPage: React.FC = () => {
       <ConfirmDialogSlide
         isOpen={confirmDialogOpen}
         years={years}
+        network={tokenStandard}
         selectedAmount={avinocAmount}
         networkBonus={networkBonus}
         handleClose={() => setConfirmDialogOpen(false)}

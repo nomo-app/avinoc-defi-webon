@@ -24,7 +24,8 @@ export const getNomoEvmNetwork = (): NomoEvmNetwork => {
   const searchParams = getSearchParams();
   const network = searchParams.get("network");
   if (!network) {
-    return "ethereum"
+    console.error("No network specified in URL, defaulting to ethereum");
+    return "zeniq-smart-chain"
   }
   return network as NomoEvmNetwork;
 };

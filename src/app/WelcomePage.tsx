@@ -13,35 +13,15 @@ import { StakingNft, computeUnclaimedRewards, fetchStakingNft, submitClaimTransa
 import { CongratDialogSlide } from "./minting/ui/CongratDialog";
 import { formatAVINOCAmount, formatTokenDollarPrice, useAvinocPrice } from "@/util/use-avinoc-price";
 import { useTranslation } from "react-i18next";
-
-export type PageState =
-  | "PENDING_TOKENID_FETCH"
-  | "PENDING_DETAILS_FETCH"
-  | "PENDING_SUBMIT_TX"
-  | "IDLE"
-  | "ERROR_NO_NFTS_CLAIM"
-  | "ERROR_CANNOT_PAY_FEE"
-  | "ERROR_TX_FAILED"
-  | "ERROR_FETCH_FAILED";
-
-export function isPendingState(pageState: PageState) {
-  return pageState.startsWith("PENDING");
-}
-
-export function isErrorState(pageState: PageState) {
-
-  console.error("pageState", pageState);
-  return pageState.startsWith("ERROR");
-}
-
+import { PageState, StatusBox } from "./claiming/logic/ClaimRewardsPage";
 
 export default function Home() {
   const navigate = useNavigate();
   const { evmAddress } = useEvmAddress();
-  const [chain, setChain] = useState('ethereum');
+  const [chain, setChain] = useState('zeniq-smart-chain');
   const location = useLocation();
   const [pageState, setPageState] = useState<PageState>(
-    "PENDING_TOKENID_FETCH"
+    "IDLE"
   );
   const { t } = useTranslation();
   const avinocPrice = useAvinocPrice();
@@ -62,6 +42,9 @@ export default function Home() {
 
   useEffect(() => {
     updateUrlWithChain(chain);
+    setTokenIDs([]);
+    setStakingNFTs({});
+    setTotalUnclaimedRewards(0n);
   }, [chain]);
 
   console.log("url", window.location.href);
@@ -105,19 +88,19 @@ export default function Home() {
     });
   }, [tokenIDs]);
 
-  console.log("evmAddress", evmAddress);
-  console.log("fetchError", fetchError);
-
   useEffect(() => {
-    const totalRewards = Object.values(stakingNFTs).reduce((total, nft) => {
-      return total + computeUnclaimedRewards(nft);
+    console.log("Calling totla rewards computation!")
+
+    const totalUnclaimedRewards = Object.values(stakingNFTs).reduce((total, nft) => {
+      return computeUnclaimedRewards(nft);
     }, 0n);
-    setTotalUnclaimedRewards(totalRewards);
-  }, [stakingNFTs]);
+    setTotalUnclaimedRewards(totalUnclaimedRewards);
+  }, [stakingNFTs, chain]);
 
   console.log("totalUnclaimedRewards", totalUnclaimedRewards);
 
   function doClaim(args: { tokenIDs: Array<bigint> }) {
+    console.log("tokenIDs that get claimed", tokenIDs);
     if (!evmAddress) {
       setPageState("ERROR_CANNOT_PAY_FEE");
       return;
@@ -134,11 +117,8 @@ export default function Home() {
       })
       .catch((e) => {
         setPageState("ERROR_TX_FAILED");
-        console.error(e);
+        // console.error(e);
       });
-  }
-  function onClickClaim(stakingNft: StakingNft) {
-    doClaim({ tokenIDs: [stakingNft.tokenId] });
   }
 
   function onClickClaimAll() {
@@ -156,6 +136,13 @@ export default function Home() {
         <h2 style={{ fontFamily: "Helvetica", color: "var(--nomoPrimary)" }}>AVINOC DeFi</h2>
       </div>
 
+      {pageState === "IDLE" ? (
+        <div />
+      ) : (
+        <div style={{ paddingBottom: "1rem" }}>
+          <StatusBox pageState={pageState} />
+        </div>
+      )}
       <div className="cardBody">
 
         <div className="welcome-page-body">
@@ -174,7 +161,6 @@ export default function Home() {
 
             <button className={`chainselect-button-eth ${chain === 'ethereum' ? 'selected' : ''}`}
               onClick={() => {
-                // navigateToMintingPage("ethereum", navigate) 
                 setChain('ethereum')
               }}>
               <img src={ethLogo} alt="Ethereum Logo" className="chainselect-logo" />
@@ -209,7 +195,7 @@ export default function Home() {
           Stake {chain === "ethereum" ? "ERC20" : "ZEN20"}
         </button>
         <button className="view-staking-button" onClick={() => navigateToClaimingPage(navigate)}>
-          View Staking NFT's
+          View Staking NFTs
         </button>
         <div className="welcome-page-footer">
           <button className="migrate-button" onClick={installMigrationWebOn}>

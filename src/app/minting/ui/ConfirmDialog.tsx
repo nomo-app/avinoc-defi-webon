@@ -1,6 +1,5 @@
 
 import * as React from "react";
-import "@/common/colors.css";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -13,9 +12,6 @@ import CheckIcon from "@mui/icons-material/Check";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import { getApyValues } from "../logic/staking-rewards";
-import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
-import { avinocIcon } from "@/asset-paths";
 import { formatAVINOCAmount } from "@/util/use-avinoc-price";
 
 const Transition = React.forwardRef(function Transition(
@@ -32,6 +28,7 @@ export const ConfirmDialogSlide: React.FC<{
   years: bigint;
   selectedAmount: bigint;
   networkBonus: boolean;
+  network: string;
   handleClose: () => void;
   handleConfirm: () => void;
 }> = (props) => {
@@ -56,73 +53,101 @@ export const ConfirmDialogSlide: React.FC<{
       keepMounted
       onClose={props.handleClose}
       aria-describedby="alert-dialog-slide-description"
+      maxWidth="sm"
+      fullWidth
+      sx={{
+        '& .MuiDialog-paper': {
+          borderRadius: '10px',
+          backgroundColor: '#283255',
+        }
+      }}
+    // color="white"
     >
       <div
         style={{
-          textAlign: "center",
-          background: "url(assets/registrationbackground.svg)",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "100%",
+          textAlign: "start",
+          color: "white",
         }}
       >
-        <DialogTitle>
+        <DialogTitle style={{ textAlign: "center", fontSize: "1.5rem" }}>
           {t("staking.dialogConfirm")}
-          <IconButton
-            aria-label="close"
-            onClick={props.handleClose}
-            sx={{
-              position: "absolute",
-              right: 8,
-              top: 8,
-              color: "gray",
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
+
         </DialogTitle>
         <DialogContent>
+          <div style={{
+            fontFamily: "Helvetica",
+            display: "flex",
+            color: "#2FAAA5",
+            justifyContent: "start",
+          }}>
+            {t("staking.amount")}
+          </div>
           <div
             style={{
-              zIndex: "1",
-              fontSize: "small",
               alignItems: "center",
               display: "flex",
-              justifyContent: "center",
+              paddingTop: ".5rem",
+              justifyContent: "start",
+              fontWeight: "bold",
+              fontFamily: "Helvetica",
+              fontSize: "large",
             }}
             id="alert-dialog-slide-description"
           >
-            {t("staking.amount")}: {visibleSelectedAmount}
-            <img
-              src={avinocIcon}
-              className={"avi-logo"}
-              style={{ height: "12px" }}
-            />
+            {visibleSelectedAmount} {props.network}
+
           </div>
 
           <div
             style={{
-              zIndex: "1",
-              textAlign: "center",
-              fontSize: "small",
-              marginBottom: "14px",
+              paddingTop: "1.5rem",
+              justifyContent: "start",
+              color: "#2FAAA5",
+              fontFamily: "Helvetica",
             }}
           >
-            {t("reward.stakingPeriod")}: {props.years.toString()}{" "}
+            {t("reward.stakingPeriod")}
+          </div>
+          <div
+            style={{
+              alignItems: "center",
+              display: "flex",
+              paddingTop: ".5rem",
+              justifyContent: "start",
+              fontFamily: "Helvetica",
+              fontWeight: "bold",
+              fontSize: "large",
+            }}
+            id="alert-dialog-slide-description"
+          >
+            {props.years.toString()}{" "}
             {getYearText()}
           </div>
 
           <div
             style={{
-              fontSize: "small",
+              paddingTop: "1.5rem",
               display: "flex",
+              fontFamily: "Helvetica",
+              color: "#2FAAA5",
             }}
             id="alert-dialog-slide-description"
           >
-            <CheckBoxNetwork networkBonus={!props.networkBonus} />
-            <div style={{ flexGrow: 1, textAlign: "left", marginRight: "2px" }}>
-              {t("staking.apyWithoutBonus")}:{" "}
-            </div>
-            <div>{getApyValues(props.years).apyWithoutBonus * 100} %</div>
+            APY
+          </div>
+          <div
+            style={{
+              alignItems: "center",
+              display: "flex",
+              paddingTop: ".5rem",
+              justifyContent: "start",
+              fontFamily: "Helvetica",
+              fontWeight: "bold",
+              fontSize: "large",
+            }}
+            id="alert-dialog-slide-description"
+          >
+            {getApyValues(props.years).apyWithoutBonus * 100} %
           </div>
 
           <div
@@ -133,29 +158,48 @@ export const ConfirmDialogSlide: React.FC<{
             }}
             id="alert-dialog-slide-description"
           >
-            <CheckBoxNetwork networkBonus={props.networkBonus} />
-            <div style={{ flexGrow: 1, textAlign: "left", marginRight: "2px" }}>
+            {/* <CheckBoxNetwork networkBonus={props.networkBonus} /> */}
+            {/* <div style={{ flexGrow: 1, textAlign: "left", marginRight: "2px" }}>
               {t("staking.apyWithBonus")}:{" "}
-            </div>
-            <div>{getApyValues(props.years).apyWithBonus * 100} %</div>
+            </div> */}
+            {/* <div>{getApyValues(props.years).apyWithBonus * 100} %</div> */}
           </div>
         </DialogContent>
-        <div>
+        {/* <div>
           <AlertDialog networkBonus={props.networkBonus} />
-        </div>
+        </div> */}
 
         <DialogActions>
           <Button
             style={{
               padding: "2%",
-              backgroundColor: "var(--color-primary-button-background)",
+              backgroundColor: "#252837",
               color: "white",
               border: "none",
               borderRadius: "5px",
               width: "100%",
               height: "50px",
               alignSelf: "center",
-              margin: "20px",
+              margin: ".5rem",
+              fontSize: "small",
+              fontWeight: "bold",
+              transition: "ease-in-out all 0.3s",
+            }}
+            onClick={props.handleClose}
+          >
+            {"Cancel"}
+          </Button>
+          <Button
+            style={{
+              padding: "2%",
+              backgroundColor: "#2FAAA5",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              width: "100%",
+              height: "50px",
+              alignSelf: "center",
+              margin: ".5rem",
               fontSize: "small",
               fontWeight: "bold",
               transition: "ease-in-out all 0.3s",
