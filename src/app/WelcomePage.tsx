@@ -133,7 +133,7 @@ export default function Home() {
     <div className="welcome-page-content">
       <div className="welcome-page-header">
         <img src={avinocDeFiLogo} className="avinoc-icon" />
-        <h2 style={{ fontFamily: "Helvetica", color: "var(--nomoPrimary)" }}>AVINOC DeFi</h2>
+        <h2 style={{ fontFamily: "Helvetica", color: "white" }}>AVINOC DeFi</h2>
       </div>
 
       {pageState === "IDLE" ? (

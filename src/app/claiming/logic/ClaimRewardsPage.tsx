@@ -245,6 +245,7 @@ export const StatusBox: React.FC<{ pageState: PageState }> = (props) => {
             marginLeft: "5px",
             display: "flex",
             alignItems: "center",
+            color: "white"
           }}
         >
           {getStatusMessage()}
