@@ -176,7 +176,7 @@ export default function Home() {
           {!!fetchError && <ErrorDetails error={fetchError} />}
           <h3>   {t("reward.unclaimedRewards")}</h3>
           <div className="unclaimed-rewards-amount">
-            {formatAVINOCAmount({ tokenAmount: totalUnclaimedRewards })} {chain === "ethereum" ? "ERC20" : "ZEN20"}</div>
+            {formatAVINOCAmount({ tokenAmount: totalUnclaimedRewards, ultraPrecision: true })}</div>
           <div className="unclaimed-rewards-amount-currency">{formatTokenDollarPrice({ tokenAmount: totalUnclaimedRewards, tokenPrice: avinocPrice.avinocPrice })}</div>
           <button className="claim-all-button" onClick={() => {
             onClickClaimAll();
