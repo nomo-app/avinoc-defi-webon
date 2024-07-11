@@ -60,3 +60,8 @@ export const dots: CSSProperties = {
   alignSelf: "center",
   marginBottom: "0.5rem",
 };
+export const stakeBoxHeader: CSSProperties = {
+  width: "100%",
+  height: "40px",
+  backgroundColor: "#323F6B",
+};

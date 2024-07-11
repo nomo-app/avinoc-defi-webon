@@ -123,15 +123,6 @@ const ClaimRewardsPage: React.FC = () => {
     doClaim({ tokenIDs: [stakingNft.tokenId] });
   }
 
-  function onClickClaimAll() {
-    const allNFTs: StakingNft[] = Object.values(stakingNFTs);
-    const claimableNFTs = allNFTs.filter(
-      (nft) => nft.lastClaim.getTime() < nft.end.getTime()
-    );
-    const tokenIDs: bigint[] = claimableNFTs.map((nft) => nft.tokenId);
-    doClaim({ tokenIDs });
-  }
-
   const nftID = getNFTID();
   const selectedNFT = nftID ? stakingNFTs[Number(nftID)] : undefined;
   console.log("selectedNFT", selectedNFT);

@@ -94,10 +94,10 @@ export default function Home() {
     const totalUnclaimedRewards = Object.values(stakingNFTs).reduce((total, nft) => {
       return computeUnclaimedRewards(nft);
     }, 0n);
+
     setTotalUnclaimedRewards(totalUnclaimedRewards);
   }, [stakingNFTs, chain]);
 
-  console.log("totalUnclaimedRewards", totalUnclaimedRewards);
 
   function doClaim(args: { tokenIDs: Array<bigint> }) {
     console.log("tokenIDs that get claimed", tokenIDs);

@@ -30,7 +30,9 @@ export function formatAVINOCAmount(args: {
   tokenAmount: bigint;
   ultraPrecision?: boolean;
   showStandard?: boolean;
+  showPrecisionForDay?: boolean;
 }): string {
+
   const inpreciseTokenAmount = Number(args.tokenAmount) / 1e18;
   const tokenStandard = getTokenStandard();
 
@@ -56,10 +58,37 @@ export function formatAVINOCAmount(args: {
     } else {
       precision = 2;
     }
+
     return inpreciseTokenAmount.toFixed(precision) + " AVINOC " + tokenStandard;
   }
 
+  if (args.showPrecisionForDay && inpreciseTokenAmount > 0) {
+
+    let precision: number;
+    if (inpreciseTokenAmount < 0.1) {
+      precision = 5;
+    } else if (inpreciseTokenAmount < 1) {
+      precision = 5;
+    } else if (inpreciseTokenAmount < 10) {
+      precision = 4;
+    } else if (inpreciseTokenAmount < 100) {
+      precision = 4;
+    } else if (inpreciseTokenAmount < 1000) {
+      precision = 5;
+    } else if (inpreciseTokenAmount < 10000) {
+      precision = 4;
+    } else if (inpreciseTokenAmount < 100000) {
+      precision = 3;
+    } else {
+      precision = 2;
+    }
+
+    return inpreciseTokenAmount.toFixed(precision) + " " + tokenStandard + "/Day";
+  }
+
   const visibleAmount = inpreciseTokenAmount.toFixed(2);
+
+
   return visibleAmount + (showStandard ? " AVINOC " : "");
 }
 

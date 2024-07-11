@@ -29,7 +29,7 @@ import { PageState } from "@/app/minting/logic/MintingPage";
 import { isPendingState } from "@/app/claiming/logic/ClaimRewardsPage";
 import { avinocIcon, boxLogo, doubleBoxLogo, rocketIcon } from "@/asset-paths";
 import BackButton from "@/common/BackButton";
-import { dots, listItem, listTitle } from "./claim-style";
+import { dots, listItem, listTitle, stakeBoxHeader } from "./claim-style";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Check } from "@mui/icons-material";
 
@@ -174,6 +174,7 @@ export const StakingNftBox: React.FC<{
   pageState: PageState;
   onClickClaim: (stakingNft: StakingNft) => void;
 }> = (props) => {
+
   const { t } = useTranslation();
   usePeriodReRender(1000); // frequent re-rendering to show "live updates" of rewards
 
@@ -195,9 +196,16 @@ export const StakingNftBox: React.FC<{
   const avinocPerDay: bigint = totalRewards / (years * 365n);
   const avinocPerDayFormatted = formatAVINOCAmount({
     tokenAmount: avinocPerDay,
+    showPrecisionForDay: true,
   });
+
+  // console.log("formatAVINOCAmount", avinocPerDayFormatted);
   const fullyClaimed: boolean = isFullyClaimed(props.stakingNft);
   const [expanded, setExpanded] = React.useState(false);
+
+  const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+  const startDate = new Intl.DateTimeFormat("en-GB", options).format(props.stakingNft.start);
+  const endDate = new Intl.DateTimeFormat('en-GB', options).format(props.stakingNft.end);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -209,7 +217,6 @@ export const StakingNftBox: React.FC<{
   return (
     <Card
       style={{
-        padding: "1rem",
         height: "fit-content",
         width: "100%",
         flexShrink: 0,
@@ -223,16 +230,22 @@ export const StakingNftBox: React.FC<{
         flexDirection: "column",
         width: "100%",
       }}>
+
         <div style={{
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          // justifyContent: "space-between",
+          justifyContent: "space-between",
+          backgroundColor: "#323F6B",
+          paddingTop: "1rem",
+          paddingLeft: "1rem",
+          paddingRight: "1rem",
+          paddingBottom: ".5rem",
         }}>
+
           <div style={listTitle}>
             NFT-ID
           </div>
-          <div style={dots}></div>
           <div style={listItem}>
             {"#" + props.stakingNft.tokenId}
           </div>
@@ -241,39 +254,35 @@ export const StakingNftBox: React.FC<{
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
+          paddingTop: "1rem",
+          paddingLeft: "1rem",
+          paddingRight: "1rem",
         }}>
-          <div style={listTitle}>
-            Staked
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start",
+          }}>
+            <div style={listTitle}>
+              Staked on
+            </div>
+            <div style={listItem}>
+              {startDate}
+            </div>
           </div>
-          <div style={dots}></div>
-          <div style={listItem}>
-            {formatAVINOCAmount({ tokenAmount: props.stakingNft.amount })}
-          </div>
-        </div>
-        <div style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}>
-          <div style={listTitle}>
-            {t("reward.totalPayout")}
-          </div>
-          <div style={dots}></div>
-          <div style={listItem}>
-            {formatAVINOCAmount({ tokenAmount: totalRewards })}
-          </div>
-        </div>
-        <div style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}>
-          <div style={listTitle}>
-            APY
-          </div>
-          <div style={dots}></div>
-          <div style={listItem}>
-            {props.stakingNft.apy + "%"}
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "start",
+            alignItems: "start",
+          }}>
+            <div style={listTitle}>
+              Staking until
+            </div>
+            <div style={listItem}>
+              {endDate}
+            </div>
           </div>
         </div>
       </div>
@@ -295,6 +304,8 @@ export const StakingNftBox: React.FC<{
             width: "100%",
             color: "white",
             paddingBottom: "0.5rem",
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
           }}
         >
           <LinearProgressWithLabel
@@ -314,6 +325,8 @@ export const StakingNftBox: React.FC<{
       {fullyClaimed ? (
         <div style={{
           paddingTop: ".5rem",
+          paddingLeft: "1rem",
+          paddingBottom: "1rem",
           display: "flex",
           alignItems: "center",
           width: "100%", fontSize: "1rem", color: "#D2D2D2"
@@ -327,15 +340,18 @@ export const StakingNftBox: React.FC<{
           justifyContent: "space-between",
           alignItems: "center",
           padding: "0 0rem",
+          paddingRight: "1rem",
+          paddingLeft: "1rem",
           width: "100%",
         }}>
           <div
             style={{
               fontSize: "1.1rem",
-              color: "#2FAAA5",
+              color: "white",
             }}
           >
-            {t("reward.unclaimedRewards")}
+
+            {avinocPerDayFormatted}
           </div>
           <div style={{ marginRight: '-12px' }}>
             <ExpandMore
@@ -353,19 +369,58 @@ export const StakingNftBox: React.FC<{
       )
       }
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent style={{ padding: "0rem" }}>
+        <CardContent style={{ padding: "1rem" }}>
           <div style={
             {
               display: "flex",
               flexDirection: "column",
-              justifyContent: "start",
-              alignItems: "start",
               width: "100%",
             }
 
           }>
-            <div style={{ fontSize: "normal", fontWeight: "bold", color: "white", paddingBottom: ".5rem" }}>{unclaimedRewardsFormatted} </div>
-            <div style={{ fontSize: "normal", fontWeight: "bold", color: "#D2D2D2" }}>
+            <div style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}>
+              <div style={listTitle}>
+                Staked
+              </div>
+              <div style={dots}></div>
+              <div style={listItem}>
+                {formatAVINOCAmount({ tokenAmount: props.stakingNft.amount })}
+              </div>
+            </div>
+            <div style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}>
+              <div style={listTitle}>
+                {t("reward.totalPayout")}
+              </div>
+              <div style={dots}></div>
+              <div style={listItem}>
+                {formatAVINOCAmount({ tokenAmount: totalRewards })}
+              </div>
+            </div>
+            <div style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}>
+              <div style={listTitle}>
+                APY
+              </div>
+              <div style={dots}></div>
+              <div style={listItem}>
+                {props.stakingNft.apy + "%"}
+              </div>
+            </div>
+            <div style={{ fontSize: "normal", color: "#2FAAA5", paddingBottom: ".5rem", display: "flex", justifyContent: "start", paddingTop: ".5rem" }}>
+              {t("reward.unclaimedRewards")}</div>
+            <div style={{ fontSize: "normal", fontWeight: "bold", color: "white", paddingBottom: ".5rem", display: "flex", justifyContent: "start" }}>{unclaimedRewardsFormatted} </div>
+            <div style={{ fontSize: "normal", fontWeight: "bold", color: "#D2D2D2", display: "flex", justifyContent: "start" }}>
               {formatTokenDollarPrice({
                 tokenPrice: props.avinocPrice,
                 tokenAmount: unclaimedRewards,
