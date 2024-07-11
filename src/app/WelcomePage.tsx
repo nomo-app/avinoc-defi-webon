@@ -98,6 +98,19 @@ export default function Home() {
     setTotalUnclaimedRewards(totalUnclaimedRewards);
   }, [stakingNFTs, chain]);
 
+  const refreshRewards = () => {
+    if (evmAddress) {
+      fetchStakingTokenIDs({ ethAddress: evmAddress })
+        .then((tokenIDs: any) => {
+          tokenIDs.sort((a: bigint, b: bigint) => Number(a - b));
+          setTokenIDs(tokenIDs);
+        })
+        .catch((e) => {
+          console.error(e);
+          setFetchError(e);
+        });
+    }
+  };
 
   function doClaim(args: { tokenIDs: Array<bigint> }) {
     console.log("tokenIDs that get claimed", tokenIDs);
@@ -113,6 +126,7 @@ export default function Home() {
         } else {
           setPageState("IDLE");
           setCongratDialogOpen(true);
+          refreshRewards();
         }
       })
       .catch((e) => {
