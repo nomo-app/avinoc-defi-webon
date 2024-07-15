@@ -7,3 +7,5 @@ export const avinocDeFiLogo = "/nomo_icon.svg";
 export const zeniqLogo = "/assets/zeniq_logo.svg";
 export const ethLogo = "/assets/eth_logo.svg";
 export const avinoc = "/assets/avinoc.svg";
+export const vooCard = "/assets/voo_card.svg";
+export const vooIcon = "/assets/voo_icon.png";

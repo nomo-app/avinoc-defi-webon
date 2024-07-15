@@ -1,11 +1,11 @@
 import "@/util/i18n";
-import { avinocDeFiLogo, ethLogo, zeniqLogo } from "@/asset-paths";
+import { avinocDeFiLogo, ethLogo, vooCard, vooIcon, zeniqLogo } from "@/asset-paths";
 import { navigateToClaimingPage, navigateToMintingPage } from "@/web3/navigation";
 import { nomo } from "nomo-webon-kit";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./minting/ui/MintingPage.css";
 import "./WelcomePage.scss";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useEvmAddress } from "@/web3/web3-common";
 import { fetchStakingTokenIDs } from "@/web3/nft-fetching";
 import ErrorDetails from "@/common/ErrorDetails";
@@ -14,6 +14,8 @@ import { CongratDialogSlide } from "./minting/ui/CongratDialog";
 import { formatAVINOCAmount, formatTokenDollarPrice, useAvinocPrice } from "@/util/use-avinoc-price";
 import { useTranslation } from "react-i18next";
 import { PageState, StatusBox } from "./claiming/logic/ClaimRewardsPage";
+import { IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -39,6 +41,15 @@ export default function Home() {
   };
 
   const [totalUnclaimedRewards, setTotalUnclaimedRewards] = useState<bigint>(0n);
+
+  const [hasBanner, setHasBanner] = useState<boolean>(() => {
+    const bannerState = localStorage.getItem('hasBanner');
+    return bannerState !== null ? JSON.parse(bannerState) : true;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('hasBanner', JSON.stringify(hasBanner));
+  }, [hasBanner]);
 
   useEffect(() => {
     updateUrlWithChain(chain);
@@ -145,10 +156,32 @@ export default function Home() {
   }
   return (
     <div className="welcome-page-content">
+
       <div className="welcome-page-header">
         <img src={avinocDeFiLogo} className="avinoc-icon" />
         <h2 style={{ fontFamily: "Helvetica", color: "white" }}>AVINOC DeFi</h2>
       </div>
+      {
+        hasBanner && (<div className="voo-banner">
+          <div className="voo-banner-title">
+            <h4>
+              Check VOO/AVINOCs new WebOn!
+            </h4>
+            <IconButton className="close-button" onClick={() =>
+              setHasBanner(false)
+            }>
+              <CloseIcon />
+            </IconButton>
+          </div>
+          <div style={{ padding: ".5rem" }}></div>
+          <img src={vooCard} alt="voo_card" onClick={() => {
+            installVooOne();
+            setHasBanner(false);
+          }} />
+        </div>
+        )
+      }
+
 
       {pageState === "IDLE" ? (
         <div />
@@ -168,20 +201,16 @@ export default function Home() {
               <img src={zeniqLogo} alt="ZENIQ Logo" className="chainselect-logo" />
               <div className="chainselect-text">
                 <span>ZEN20</span>
-                <div className="span-divider"> </div>
-                <span>(ZENIQ Smartchain)</span>
               </div>
             </button>
 
-            <button className={`chainselect-button-eth ${chain === 'ethereum' ? 'selected' : ''}`}
+            <button className={`chainselect-button ${chain === 'ethereum' ? 'selected' : ''}`}
               onClick={() => {
                 setChain('ethereum')
               }}>
               <img src={ethLogo} alt="Ethereum Logo" className="chainselect-logo" />
               <div className="chainselect-text-eth">
                 <span>ERC20</span>
-                <div className="span-divider"> </div>
-                <span>(Ethereum)</span>
               </div>
             </button>
           </div>
@@ -211,20 +240,27 @@ export default function Home() {
         <button className="view-staking-button" onClick={() => navigateToClaimingPage(navigate)}>
           View Staking NFTs
         </button>
-        <div className="welcome-page-footer">
-          <button className="migrate-button" onClick={installMigrationWebOn}>
-            Perform Migration
-            <div className="migration-info">
-              Migrate from ERC20 to ZEN20
-            </div>
-          </button>
-          <div className="migrate-button-divider"></div>
-          <button className="migrate-button" onClick={openSmartchainFaucet}>
-            Smartchain Faucet
-            <div className="migration-info">
-              Obtain free ZENIQ for paying transaction fees
-            </div>
-          </button>
+        <div className="welcome-page-col">
+          <img src={vooIcon} className="voo-icon" onClick={
+            () => {
+              installVooOne();
+            }
+          } />
+          <div className="welcome-page-footer">
+            <button className="migrate-button" onClick={installMigrationWebOn}>
+              Perform Migration
+              <div className="migration-info">
+                Migrate from ERC20 to ZEN20
+              </div>
+            </button>
+            <div className="migrate-button-divider"></div>
+            <button className="migrate-button" onClick={openSmartchainFaucet}>
+              Smartchain Faucet
+              <div className="migration-info">
+                Obtain free ZENIQ for paying transaction fees
+              </div>
+            </button>
+          </div>
         </div>
       </div>
       <CongratDialogSlide
@@ -249,6 +285,14 @@ async function installMigrationWebOn() {
 async function openSmartchainFaucet() {
   nomo.installWebOn({
     deeplink: "https://nomo.app/webon/w.nomo.app/faucet/nomo.tar.gz",
+    navigateBack: false,
+    skipPermissionDialog: true,
+  });
+}
+
+async function installVooOne() {
+  nomo.installWebOn({
+    deeplink: "https://nomo.app/webon/voo.one",
     navigateBack: false,
     skipPermissionDialog: true,
   });

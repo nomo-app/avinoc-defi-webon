@@ -3,9 +3,47 @@
   flex-direction: column;
   width: 100%;
   height: 100vh;
-  padding: 2rem;
+  padding: 1.5rem;
   background-color: #1D2140;
   font-family: 'Helvetica';
+
+  .voo-banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    background-color: #283255;
+    position: relative;
+  }
+
+  .voo-banner-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+  }
+
+  .voo-banner img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+  }
+
+  .close-button {
+    position: absolute;
+    top: .3rem;
+    right: .3rem;
+
+    &:hover {
+      cursor: pointer;
+      background-color: #2FAAA5;
+    }
+  }
+
 
   .welcome-page-header {
     display: flex;
@@ -158,6 +196,7 @@
     flex: 2;
     display: flex;
     align-items: center;
+    justify-content: center;
     border: none;
     border-radius: 0.5rem;
     background-color: rgb(57, 66, 105);
@@ -166,29 +205,28 @@
     transition: background-color 0.3s ease;
     font-size: medium;
     font-weight: bold;
-    padding: 0.4rem;
-    padding-left: 0.5rem;
+    padding: 1rem;
   }
 
 
 
-  .chainselect-button-eth {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    border: none;
-    border-radius: 0.5rem;
-    background-color: rgb(57, 66, 105);
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: medium;
-    font-weight: bold;
-    padding: 0.4rem;
-    padding-bottom: 1rem;
-    padding-top: 1rem;
-    padding-left: 0.5rem;
-  }
+  // .chainselect-button-eth {
+  //   flex: 1;
+  //   display: flex;
+  //   align-items: center;
+  //   border: none;
+  //   border-radius: 0.5rem;
+  //   background-color: rgb(57, 66, 105);
+  //   color: white;
+  //   cursor: pointer;
+  //   transition: background-color 0.3s ease;
+  //   font-size: medium;
+  //   font-weight: bold;
+  //   padding: 0.4rem;
+  //   padding-bottom: 1rem;
+  //   padding-top: 1rem;
+  //   padding-left: 0.5rem;
+  // }
 
   .selected {
     background-color: #2FAAA5
@@ -217,6 +255,21 @@
 
   .span-divider {
     height: 0.5rem;
+  }
+
+  .welcome-page-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .welcome-page-col img {
+
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin-bottom: 1rem;
   }
 
   .welcome-page-footer {

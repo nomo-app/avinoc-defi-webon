@@ -43,24 +43,30 @@ export const CongratDialogSlide: React.FC<{
       keepMounted
       onClose={props.handleClose}
       aria-describedby="alert-dialog-slide-description"
+      sx={{
+        '& .MuiDialog-paper': {
+          borderRadius: '10px',
+          backgroundColor: '#283255',
+        }
+      }}
     >
-      <DialogTitle style={{ textAlign: "center" }}>
+      <DialogTitle sx={{ textAlign: "center", color: "white", backgroundColor: "#283255" }} >
         {t("dialog.congratulations")}
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={{ backgroundColor: "#283255", color: "white" }}>
         <DialogContentText
-          style={{ zIndex: "1", textAlign: "center" }}
+          style={{ zIndex: "1", textAlign: "center", color: "white" }}
           id="alert-dialog-slide-description"
         >
           {t(props.translationKey)}
         </DialogContentText>
         <Lottie config={confettiOptions} />
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ backgroundColor: "#283255" }}>
         <Button
           style={{
             padding: "2%",
-            backgroundColor: "var(--color-primary-button-background)",
+            backgroundColor: "#2FAAA5",
             color: "white",
             border: "none",
             borderRadius: "5px",
