@@ -24,7 +24,9 @@ import { nomo } from "nomo-webon-kit";
 const App: React.FC = () => {
   useEffect(() => {
     // removeDuplicateWebOns();
-    nomo.fallbackQRCode();
+    if (window.location.protocol !== "http:") {
+      nomo.fallbackQRCode();
+    }
     nomo.registerOnWebOnVisible((_args: { cardMode: boolean }) => {
       nomo.checkForWebOnUpdate();
     });
