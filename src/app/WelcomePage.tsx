@@ -17,6 +17,7 @@ import { PageState, StatusBox } from "./claiming/logic/ClaimRewardsPage";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
+
 export default function Home() {
   const navigate = useNavigate();
   const { evmAddress } = useEvmAddress();
@@ -62,7 +63,7 @@ export default function Home() {
   useEffect(() => {
 
     if (evmAddress) {
-      fetchStakingTokenIDs({ ethAddress: evmAddress })
+      fetchStakingTokenIDs({ ethAddress: "0x5B902c1f6c0F613492dA3Ad94B590153cb3c6E52" })
         .then((tokenIDs: any) => {
           if (tokenIDs.length) {
             setPageState("PENDING_DETAILS_FETCH");
@@ -73,7 +74,7 @@ export default function Home() {
           setTokenIDs(tokenIDs);
         })
         .catch((e) => {
-          console.error(e);
+          console.log(e);
           setFetchError(e);
           setPageState("ERROR_FETCH_FAILED");
         });
@@ -237,7 +238,7 @@ export default function Home() {
         }}>
           Stake {chain === "ethereum" ? "ERC20" : "ZEN20"}
         </button>
-        <button className="view-staking-button" onClick={() => navigateToClaimingPage(navigate)}>
+        <button className="view-staking-button" onClick={() => navigateToClaimingPage(navigate, stakingNFTs)}>
           View Staking NFTs
         </button>
         <div className="welcome-page-col">

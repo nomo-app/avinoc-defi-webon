@@ -22,6 +22,7 @@ import { fetchStakingTokenIDs } from "@/web3/nft-fetching";
 import ErrorDetails from "@/common/ErrorDetails";
 import { getNFTID, getNomoEvmNetwork } from "@/web3/navigation";
 import BackButton from "@/common/BackButton";
+import { useLocation } from "react-router-dom";
 
 export type PageState =
   | "PENDING_TOKENID_FETCH"
@@ -41,62 +42,75 @@ export function isErrorState(pageState: PageState) {
   return pageState.startsWith("ERROR");
 }
 
+
+interface ClaimRewardsState {
+  stakingNFTs: Record<string, StakingNft>;
+}
+
 const ClaimRewardsPage: React.FC = () => {
+
+  const location = useLocation();
+
+  const state = location.state as ClaimRewardsState | null;
+  const stakingNFTs = state?.stakingNFTs ?? {};
+
+
+  console.log("stakingNFTs", stakingNFTs);
   const { evmAddress } = useEvmAddress();
   const { avinocPrice } = useAvinocPrice();
   const [pageState, setPageState] = React.useState<PageState>(
-    "PENDING_TOKENID_FETCH"
+    "IDLE"
   );
-  const [tokenIDs, setTokenIDs] = React.useState<Array<bigint>>([]);
+  // const [tokenIDs, setTokenIDs] = React.useState<Array<bigint>>([]);
   const [fetchError, setFetchError] = React.useState<Error | null>(null);
-  const [stakingNFTs, setStakingNFTs] = React.useState<
-    Record<string, StakingNft>
-  >({});
+  // const [stakingNFTs, setStakingNFTs] = React.useState<
+  //   Record<string, StakingNft>
+  // >({});
   const [congratDialogOpen, setCongratDialogOpen] = React.useState(false);
 
-  useEffect(() => {
-    if (evmAddress) {
-      fetchStakingTokenIDs({ ethAddress: evmAddress })
-        .then((tokenIDs: any) => {
-          if (tokenIDs.length) {
-            setPageState("PENDING_DETAILS_FETCH");
-          } else {
-            setPageState("ERROR_NO_NFTS_CLAIM");
-          }
-          tokenIDs.sort((a: bigint, b: bigint) => Number(a - b));
-          setTokenIDs(tokenIDs);
-        })
-        .catch((e) => {
-          console.error(e);
-          setFetchError(e);
-          setPageState("ERROR_FETCH_FAILED");
-        });
-    }
-  }, [evmAddress]);
+  // useEffect(() => {
+  //   if (evmAddress) {
+  //     fetchStakingTokenIDs({ ethAddress: evmAddress })
+  //       .then((tokenIDs: any) => {
+  //         if (tokenIDs.length) {
+  //           setPageState("PENDING_DETAILS_FETCH");
+  //         } else {
+  //           setPageState("ERROR_NO_NFTS_CLAIM");
+  //         }
+  //         tokenIDs.sort((a: bigint, b: bigint) => Number(a - b));
+  //         setTokenIDs(tokenIDs);
+  //       })
+  //       .catch((e) => {
+  //         console.error(e);
+  //         setFetchError(e);
+  //         setPageState("ERROR_FETCH_FAILED");
+  //       });
+  //   }
+  // }, [evmAddress]);
 
-  useEffect(() => {
-    tokenIDs.forEach((tokenId) => {
-      fetchStakingNft({ tokenId })
-        .then((stakingNft: any) => {
-          setStakingNFTs((prevStakingNFTs) => {
-            return {
-              ...prevStakingNFTs,
-              ["" + tokenId]: stakingNft,
-            };
-          });
-          setPageState("IDLE");
-        })
-        .catch((e: any) => {
-          setPageState("ERROR_FETCH_FAILED");
-          console.error(e);
-        });
-    });
-  }, [tokenIDs]);
+  // useEffect(() => {
+  //   tokenIDs.forEach((tokenId) => {
+  //     fetchStakingNft({ tokenId })
+  //       .then((stakingNft: any) => {
+  //         setStakingNFTs((prevStakingNFTs) => {
+  //           return {
+  //             ...prevStakingNFTs,
+  //             ["" + tokenId]: stakingNft,
+  //           };
+  //         });
+  //         setPageState("IDLE");
+  //       })
+  //       .catch((e: any) => {
+  //         setPageState("ERROR_FETCH_FAILED");
+  //         console.error(e);
+  //       });
+  //   });
+  // }, [tokenIDs]);
 
-  function refreshOnChainData() {
-    console.log("Refreshing on-chain data...");
-    setTokenIDs([...tokenIDs]);
-  }
+  // function refreshOnChainData() {
+  //   console.log("Refreshing on-chain data...");
+  //   setTokenIDs([...tokenIDs]);
+  // }
 
   function doClaim(args: { tokenIDs: Array<bigint> }) {
     if (!evmAddress) {
@@ -182,7 +196,7 @@ const ClaimRewardsPage: React.FC = () => {
         isOpen={congratDialogOpen}
         handleClose={() => {
           setCongratDialogOpen(false);
-          refreshOnChainData();
+          // refreshOnChainData();
         }}
         translationKey={"reward.DialogSuccess"}
       />

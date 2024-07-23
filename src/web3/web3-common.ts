@@ -4,10 +4,14 @@ import { nomo } from "nomo-webon-kit";
 import { useEffect, useState } from "react";
 import { getNomoEvmNetwork } from "./navigation";
 
-export const ethProviderInstance = ethers.getDefaultProvider("mainnet");
+export const ethProviderInstance = ethers.getDefaultProvider("homestead", {
+  etherscan: "AC72N833U9MKUNXS44MV27T3HKEN4WYYT3",
+});
 
 export function getEthersProvider(): AbstractProvider {
   const network = getNomoEvmNetwork();
+
+  console.log("network", network);
   if (network === "ethereum") {
     return ethProviderInstance;
   } else if (network === "zeniq-smart-chain") {

@@ -1,5 +1,6 @@
 import { NomoEvmNetwork } from "nomo-webon-kit";
 import { NavigateFunction } from "react-router-dom";
+import { StakingNft } from "./web3-minting";
 
 export function navigateToMintingPage(
   network: NomoEvmNetwork,
@@ -8,10 +9,10 @@ export function navigateToMintingPage(
   navigate("/minting?network=" + network);
 }
 
-export function navigateToClaimingPage(navigate: NavigateFunction) {
+export const navigateToClaimingPage = (navigate: NavigateFunction, stakingNFTs: Record<string, StakingNft>) => {
   const searchParams = getSearchParams();
-  // preserve URL params when navigating to claiming page
-  navigate("/claiming?" + searchParams.toString());
+
+  navigate("/claiming?" + searchParams.toString(), { state: { stakingNFTs: stakingNFTs } });
 }
 
 function getSearchParams() {
