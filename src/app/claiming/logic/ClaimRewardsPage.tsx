@@ -118,22 +118,27 @@ const ClaimRewardsPage: React.FC = () => {
     }
   }, [evmAddress]);
 
+  async function fetchNFTDetails(tokenId: bigint) {
+    const stakingNft = await fetchStakingNft({ tokenId });
+    setStakingNFTs((prevStakingNFTs) => {
+      return {
+        ...prevStakingNFTs,
+        ["" + tokenId]: stakingNft,
+      };
+    });
+    setPageState("IDLE");
+  }
+
   useEffect(() => {
     tokenIDs.forEach((tokenId) => {
-      fetchStakingNft({ tokenId })
-        .then((stakingNft: any) => {
-          setStakingNFTs((prevStakingNFTs) => {
-            return {
-              ...prevStakingNFTs,
-              ["" + tokenId]: stakingNft,
-            };
-          });
-          setPageState("IDLE");
-        })
-        .catch((e: any) => {
-          // setPageState("ERROR_FETCH_FAILED");
+      fetchNFTDetails(tokenId).catch((e: any) => {
+        console.error(e);
+        // one retry
+        fetchNFTDetails(tokenId).catch((e: any) => {
           console.error(e);
+          setPageState("ERROR_FETCH_FAILED");
         });
+      });
     });
   }, [tokenIDs]);
 
