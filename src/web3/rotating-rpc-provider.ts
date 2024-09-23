@@ -82,7 +82,7 @@ export class RotatingRpcProvider extends ethers.AbstractProvider {
   }
 }
 
-async function performWithTimeout(provider: ethers.AbstractProvider, req: PerformActionRequest, timeout = 3000) {
+async function performWithTimeout(provider: ethers.AbstractProvider, req: ethers.PerformActionRequest, timeout = 3000) {
   const timeoutPromise = new Promise((_, reject) => {
       setTimeout(() => reject(new Error('Operation timed out')), timeout);
   });
