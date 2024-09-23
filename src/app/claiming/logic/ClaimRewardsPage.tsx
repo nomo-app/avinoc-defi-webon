@@ -13,14 +13,21 @@ import {
 import { UnreachableCaseError } from "../../../util/typesafe";
 import { useEvmAddress } from "@/web3/web3-common";
 import {
-  ClaimAllButton,
   StakingNftBox,
   // TitleBox,
 } from "../ui/ClaimRewardsComponents";
-import { centeredTitleContainer, claimRewardTitle, claimRewardsMainFlexBox } from "../ui/claim-style";
+import {
+  centeredTitleContainer,
+  claimRewardTitle,
+  claimRewardsMainFlexBox,
+} from "../ui/claim-style";
 import { fetchStakingTokenIDs } from "@/web3/nft-fetching";
 import ErrorDetails from "@/common/ErrorDetails";
-import { getNFTID, getNomoEvmNetwork } from "@/web3/navigation";
+import {
+  getNFTID,
+  getNomoEvmNetwork,
+  getTokenStandard,
+} from "@/web3/navigation";
 import BackButton from "@/common/BackButton";
 
 export type PageState =
@@ -40,6 +47,43 @@ export function isPendingState(pageState: PageState) {
 export function isErrorState(pageState: PageState) {
   return pageState.startsWith("ERROR");
 }
+
+const PartialNFTLoadingIndicator: React.FC<{
+  tokenIDs: Array<bigint>;
+  stakingNFTs: Record<string, StakingNft>;
+}> = (props) => {
+  const numAllNFTs = props.tokenIDs.length;
+  const numFetchedNFTs = Object.values(props.stakingNFTs).length;
+  if (numAllNFTs === 0) {
+    return <div />;
+  } else if (numAllNFTs === numFetchedNFTs) {
+    return (
+      <div style={{ fontSize: "medium" }}>
+        {numAllNFTs + " " + getTokenStandard() + " NFTs"}
+      </div>
+    );
+  } else {
+    return (
+      <div
+        style={{
+          fontSize: "medium",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress size={20} style={{ marginRight: "5px" }} />
+        {numFetchedNFTs +
+          " / " +
+          numAllNFTs +
+          " " +
+          getTokenStandard() +
+          " NFTs"}
+      </div>
+    );
+  }
+};
 
 const ClaimRewardsPage: React.FC = () => {
   const { evmAddress } = useEvmAddress();
@@ -87,7 +131,7 @@ const ClaimRewardsPage: React.FC = () => {
           setPageState("IDLE");
         })
         .catch((e: any) => {
-          setPageState("ERROR_FETCH_FAILED");
+          // setPageState("ERROR_FETCH_FAILED");
           console.error(e);
         });
     });
@@ -125,8 +169,7 @@ const ClaimRewardsPage: React.FC = () => {
 
   const nftID = getNFTID();
   const selectedNFT = nftID ? stakingNFTs[Number(nftID)] : undefined;
-  console.log("selectedNFT", selectedNFT);
-  const { t } = useTranslation();
+
   return (
     <div style={claimRewardsMainFlexBox}>
       {/* <div style={{ flexGrow: "10" }} /> */}
@@ -135,6 +178,10 @@ const ClaimRewardsPage: React.FC = () => {
         <BackButton />
         <div style={centeredTitleContainer}>
           <span>Staking NFTs</span>
+          <PartialNFTLoadingIndicator
+            tokenIDs={tokenIDs}
+            stakingNFTs={stakingNFTs}
+          />
         </div>
       </div>
 
@@ -228,7 +275,6 @@ export const StatusBox: React.FC<{ pageState: PageState }> = (props) => {
           marginBottom: "5px",
         }}
       >
-
         <CircularProgress />
         <div
           style={{
@@ -236,7 +282,7 @@ export const StatusBox: React.FC<{ pageState: PageState }> = (props) => {
             marginLeft: "5px",
             display: "flex",
             alignItems: "center",
-            color: "white"
+            color: "white",
           }}
         >
           {getStatusMessage()}
