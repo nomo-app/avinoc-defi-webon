@@ -1,10 +1,17 @@
 import { AbstractProvider, ethers, Signer } from "ethers";
 import { EthersjsNomoSigner, zscProvider } from "ethersjs-nomo-webons";
-import { nomo } from "nomo-webon-kit";
 import { useEffect, useState } from "react";
 import { getNomoEvmNetwork } from "./navigation";
+import {
+  ethNetwork,
+  RotatingRpcProvider,
+  rpcUrlsEthereumMainnet,
+} from "./rotating-rpc-provider";
 
-export const ethProviderInstance = ethers.getDefaultProvider("mainnet");
+export const ethProviderInstance = new RotatingRpcProvider(
+  rpcUrlsEthereumMainnet,
+  ethNetwork,
+);
 
 export function getEthersProvider(): AbstractProvider {
   const network = getNomoEvmNetwork();
