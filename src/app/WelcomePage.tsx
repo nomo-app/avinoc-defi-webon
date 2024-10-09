@@ -5,16 +5,15 @@ import { nomo } from "nomo-webon-kit";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./minting/ui/MintingPage.css";
 import "./WelcomePage.scss";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useEvmAddress } from "@/web3/web3-common";
 import { fetchStakingTokenIDs } from "@/web3/nft-fetching";
-import ErrorDetails from "@/common/ErrorDetails";
 import { StakingNft, computeUnclaimedRewards, fetchStakingNft, submitClaimTransaction } from "@/web3/web3-minting";
 import { CongratDialogSlide } from "./minting/ui/CongratDialog";
 import { formatAVINOCAmount, formatTokenDollarPrice, useAvinocPrice } from "@/util/use-avinoc-price";
 import { useTranslation } from "react-i18next";
-import { PageState, StatusBox } from "./claiming/logic/ClaimRewardsPage";
-import { IconButton } from "@mui/material";
+import { isPendingState, PageState, StatusBox } from "./claiming/logic/ClaimRewardsPage";
+import { CircularProgress, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 export default function Home() {
@@ -23,12 +22,11 @@ export default function Home() {
   const [chain, setChain] = useState('zeniq-smart-chain');
   const location = useLocation();
   const [pageState, setPageState] = useState<PageState>(
-    "IDLE"
+    "PENDING_TOKENID_FETCH"
   );
   const { t } = useTranslation();
   const avinocPrice = useAvinocPrice();
   const [tokenIDs, setTokenIDs] = useState<Array<bigint>>([]);
-  const [fetchError, setFetchError] = useState<Error | null>(null);
   const [stakingNFTs, setStakingNFTs] = useState<
     Record<string, StakingNft>
   >({});
@@ -62,6 +60,7 @@ export default function Home() {
   useEffect(() => {
 
     if (evmAddress) {
+      setPageState("PENDING_TOKENID_FETCH");
       fetchStakingTokenIDs({ ethAddress: evmAddress })
         .then((tokenIDs: any) => {
           if (tokenIDs.length) {
@@ -74,7 +73,6 @@ export default function Home() {
         })
         .catch((e) => {
           console.error(e);
-          setFetchError(e);
           setPageState("ERROR_FETCH_FAILED");
         });
     }
@@ -100,7 +98,7 @@ export default function Home() {
   }, [tokenIDs]);
 
   useEffect(() => {
-    console.log("Calling totla rewards computation!")
+    // console.log("Calling totla rewards computation!")
 
     const totalUnclaimedRewards = Object.values(stakingNFTs).reduce((total, nft) => {
       return computeUnclaimedRewards(nft);
@@ -216,16 +214,28 @@ export default function Home() {
           </div>
         </div>
         <div className="unclaimed-rewards-card">
-          {!!fetchError && <ErrorDetails error={fetchError} />}
           <h3>   {t("reward.unclaimedRewards")}</h3>
-          <div className="unclaimed-rewards-amount">
-            {formatAVINOCAmount({ tokenAmount: totalUnclaimedRewards, ultraPrecision: true })}</div>
-          <div className="unclaimed-rewards-amount-currency">{formatTokenDollarPrice({ tokenAmount: totalUnclaimedRewards, tokenPrice: avinocPrice.avinocPrice })}</div>
-          <button className="claim-all-button" onClick={() => {
-            onClickClaimAll();
-          }}>
-            {t("reward.claimAll")}
-          </button>
+          {
+            pageState === "IDLE" ?
+            <div style={{display: "contents"}}>
+              <div className="unclaimed-rewards-amount">
+                {formatAVINOCAmount({ tokenAmount: totalUnclaimedRewards, ultraPrecision: true })}</div>
+              <div className="unclaimed-rewards-amount-currency">
+                {formatTokenDollarPrice({ tokenAmount: totalUnclaimedRewards, tokenPrice: avinocPrice.avinocPrice })}
+              </div>
+              <button className="claim-all-button" onClick={() => {
+                onClickClaimAll();
+              }}>
+                {t("reward.claimAll")}
+              </button>
+            </div>
+              :
+            <div>{isPendingState(pageState) ?
+              <CircularProgress /> :
+              <div>{t("status." + pageState)}</div>}
+            </div>
+          }
+          
         </div>
         <button className="stake-button" onClick={() => {
           if (chain === 'ethereum') {
