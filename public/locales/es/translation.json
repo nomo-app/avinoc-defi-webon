@@ -12,7 +12,7 @@
     "ERROR_FETCH_FAILED": "Error: conexión fallida",
     "ERROR_INSUFFICIENT_RESERVES": "Error - Reservas AVINOC insuficientes en el contrato de participación.",
     "ERROR_NO_NFTS": "No hay NFT disponibles",
-    "ERROR_NO_NFTS_CLAIM": "No hay recompensas disponibles. Vuelva a elegir una cantidad de AVINOC.",
+    "ERROR_NO_NFTS_CLAIM": "No hay recompensas disponibles.",
     "ERROR_TX_FAILED": "Error: transacción fallida",
     "ERROR_INSUFFICIENT_ETH": "Error: no se pueden pagar las tarifas de transacción. Financie su billetera con suficiente Ethereum.",
     "ERROR_LIMIT_EXCEEDED": "La participación de AVINOC está limitada a un máximo de 250000 AVINOC (solo durante 15 años).",

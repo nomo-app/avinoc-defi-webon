@@ -12,7 +12,7 @@
     "ERROR_FETCH_FAILED": "Erro - Falha na conexão",
     "ERROR_INSUFFICIENT_RESERVES": "Erro - Reservas AVINOC insuficientes no contrato de staking.",
     "ERROR_NO_NFTS": "Não há NFTs disponíveis",
-    "ERROR_NO_NFTS_CLAIM": "Não há recompensas disponíveis. Por favor, volte para escolher uma quantidade de AVINOC.",
+    "ERROR_NO_NFTS_CLAIM": "Não há recompensas disponíveis.",
     "ERROR_TX_FAILED": "Erro - Falha na transação",
     "ERROR_INSUFFICIENT_ETH": "Erro - Não é possível pagar as taxas de transação. Por favor, financie sua carteira com Ethereum suficiente.",
     "ERROR_LIMIT_EXCEEDED": "O staking de AVINOC está limitado a um máximo de 250.000 AVINOC (apenas por 15 anos).",

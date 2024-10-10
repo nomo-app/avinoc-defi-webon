@@ -12,7 +12,7 @@
     "ERROR_FETCH_FAILED": "Fejl - Forbindelsen mislykkedes",
     "ERROR_INSUFFICIENT_RESERVES": "Fejl - Utilstrækkelige AVINOC-reserver i indsatskontrakten.",
     "ERROR_NO_NFTS": "Ingen tilgængelige NFT'er",
-    "ERROR_NO_NFTS_CLAIM": "Ingen tilgængelige belønninger. Gå tilbage for at vælge en mængde AVINOC.",
+    "ERROR_NO_NFTS_CLAIM": "Ingen tilgængelige belønninger.",
     "ERROR_TX_FAILED": "Fejl - Transaktion mislykkedes",
     "ERROR_INSUFFICIENT_ETH": "Fejl - Kan ikke betale transaktionsgebyrer. Venligst finansier din tegnebog med tilstrækkelig Ethereum.",
     "ERROR_INSUFFICIENT_ZENIQ": "Kan ikke betale transaktionsgebyrer. Venligst finansier din tegnebog med tilstrækkelig ZENIQ.",

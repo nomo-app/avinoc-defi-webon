@@ -12,7 +12,7 @@
     "ERROR_FETCH_FAILED": "Fout - Verbinding mislukt",
     "ERROR_INSUFFICIENT_RESERVES": "Fout - Onvoldoende AVINOC-reserves in het stakingscontract.",
     "ERROR_NO_NFTS": "Geen NFT's beschikbaar",
-    "ERROR_NO_NFTS_CLAIM": "Geen beloningen beschikbaar. Ga terug om een hoeveelheid AVINOC te kiezen.",
+    "ERROR_NO_NFTS_CLAIM": "Geen beloningen beschikbaar.",
     "ERROR_TX_FAILED": "Fout - Transactie mislukt",
     "ERROR_INSUFFICIENT_ETH": "Fout - Kan transactiekosten niet betalen. Gelieve uw portemonnee te financieren met voldoende Ethereum.",
     "ERROR_LIMIT_EXCEEDED": "AVINOC staking is beperkt tot een maximum van 250000 AVINOC (alleen voor 15 jaar).",

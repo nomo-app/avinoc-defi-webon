@@ -12,7 +12,7 @@
     "ERROR_FETCH_FAILED": "Fehler - Verbindung fehlgeschlagen",
     "ERROR_INSUFFICIENT_RESERVES": "Fehler - Unzureichende AVINOC-Reserven im Staking-Vertrag.",
     "ERROR_NO_NFTS": "Keine NFTs verfügbar",
-    "ERROR_NO_NFTS_CLAIM": "Keine Belohnungen verfügbar. Bitte gehen Sie zurück, um eine AVINOC-Menge auszuwählen.",
+    "ERROR_NO_NFTS_CLAIM": "Keine Belohnungen verfügbar.",
     "ERROR_TX_FAILED": "Fehler - Transaktion fehlgeschlagen",
     "ERROR_INSUFFICIENT_ETH": "Fehler - Transaktionsgebühren können nicht bezahlt werden. Bitte füllen Sie Ihr Wallet mit ausreichend Ethereum auf.",
     "ERROR_INSUFFICIENT_ZENIQ": "Transaktionsgebühren können nicht bezahlt werden. Bitte füllen Sie Ihr Wallet mit ausreichend ZENIQ auf.",

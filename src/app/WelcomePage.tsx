@@ -1,6 +1,6 @@
 import "@/util/i18n";
 import { avinocDeFiLogo, ethLogo, vooCard, vooIcon, zeniqLogo } from "@/asset-paths";
-import { navigateToClaimingPage, navigateToMintingPage } from "@/web3/navigation";
+import { getTokenStandard, navigateToClaimingPage, navigateToMintingPage } from "@/web3/navigation";
 import { nomo } from "nomo-webon-kit";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./minting/ui/MintingPage.css";
@@ -231,7 +231,7 @@ export default function Home() {
               :
             <div>{isPendingState(pageState) ?
               <CircularProgress /> :
-              <div>{t("status." + pageState)}</div>}
+              <div>{getTokenStandard() + ": " + t("status." + pageState)}</div>}
             </div>
           }
           
