@@ -278,9 +278,11 @@ export const StatusBox: React.FC<{ pageState: PageState }> = (props) => {
           display: "flex",
           flexDirection: "row",
           marginBottom: "5px",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        <CircularProgress />
+        <CircularProgress style={{ marginRight: "1rem" }} />
         <div
           style={{
             fontWeight: "bold",

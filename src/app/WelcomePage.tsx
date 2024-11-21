@@ -1,6 +1,16 @@
 import "@/util/i18n";
-import { avinocDeFiLogo, ethLogo, vooCard, vooIcon, zeniqLogo } from "@/asset-paths";
-import { getTokenStandard, navigateToClaimingPage, navigateToMintingPage } from "@/web3/navigation";
+import {
+  avinocDeFiLogo,
+  ethLogo,
+  vooCard,
+  vooIcon,
+  zeniqLogo,
+} from "@/asset-paths";
+import {
+  getTokenStandard,
+  navigateToClaimingPage,
+  navigateToMintingPage,
+} from "@/web3/navigation";
 import { nomo } from "nomo-webon-kit";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./minting/ui/MintingPage.css";
@@ -8,18 +18,31 @@ import "./WelcomePage.scss";
 import { useEffect, useState } from "react";
 import { useEvmAddress } from "@/web3/web3-common";
 import { fetchStakingTokenIDs } from "@/web3/nft-fetching";
-import { StakingNft, computeUnclaimedRewards, fetchStakingNft, submitClaimTransaction } from "@/web3/web3-minting";
+import {
+  StakingNft,
+  computeUnclaimedRewards,
+  fetchStakingNft,
+  submitClaimTransaction,
+} from "@/web3/web3-minting";
 import { CongratDialogSlide } from "./minting/ui/CongratDialog";
-import { formatAVINOCAmount, formatTokenDollarPrice, useAvinocPrice } from "@/util/use-avinoc-price";
+import {
+  formatAVINOCAmount,
+  formatTokenDollarPrice,
+  useAvinocPrice,
+} from "@/util/use-avinoc-price";
 import { useTranslation } from "react-i18next";
-import { isPendingState, PageState, StatusBox } from "./claiming/logic/ClaimRewardsPage";
+import {
+  isPendingState,
+  PageState,
+  StatusBox,
+} from "./claiming/logic/ClaimRewardsPage";
 import { CircularProgress, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 export default function Home() {
   const navigate = useNavigate();
   const { evmAddress } = useEvmAddress();
-  const [chain, setChain] = useState('zeniq-smart-chain');
+  const [chain, setChain] = useState("zeniq-smart-chain");
   const location = useLocation();
   const [pageState, setPageState] = useState<PageState>(
     "PENDING_TOKENID_FETCH"
@@ -27,26 +50,29 @@ export default function Home() {
   const { t } = useTranslation();
   const avinocPrice = useAvinocPrice();
   const [tokenIDs, setTokenIDs] = useState<Array<bigint>>([]);
-  const [stakingNFTs, setStakingNFTs] = useState<
-    Record<string, StakingNft>
-  >({});
+  const [stakingNFTs, setStakingNFTs] = useState<Record<string, StakingNft>>(
+    {}
+  );
   const [congratDialogOpen, setCongratDialogOpen] = useState(false);
 
   const updateUrlWithChain = (currentChain: string) => {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("network", currentChain);
-    navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+    navigate(`${location.pathname}?${searchParams.toString()}`, {
+      replace: true,
+    });
   };
 
-  const [totalUnclaimedRewards, setTotalUnclaimedRewards] = useState<bigint>(0n);
+  const [totalUnclaimedRewards, setTotalUnclaimedRewards] =
+    useState<bigint>(0n);
 
   const [hasBanner, setHasBanner] = useState<boolean>(() => {
-    const bannerState = localStorage.getItem('hasBanner');
+    const bannerState = localStorage.getItem("hasBanner");
     return bannerState !== null ? JSON.parse(bannerState) : true;
   });
 
   useEffect(() => {
-    localStorage.setItem('hasBanner', JSON.stringify(hasBanner));
+    localStorage.setItem("hasBanner", JSON.stringify(hasBanner));
   }, [hasBanner]);
 
   useEffect(() => {
@@ -58,7 +84,6 @@ export default function Home() {
 
   console.log("url", window.location.href);
   useEffect(() => {
-
     if (evmAddress) {
       setPageState("PENDING_TOKENID_FETCH");
       fetchStakingTokenIDs({ ethAddress: evmAddress })
@@ -100,9 +125,12 @@ export default function Home() {
   useEffect(() => {
     // console.log("Calling totla rewards computation!")
 
-    const totalUnclaimedRewards = Object.values(stakingNFTs).reduce((total, nft) => {
-      return computeUnclaimedRewards(nft);
-    }, 0n);
+    const totalUnclaimedRewards = Object.values(stakingNFTs).reduce(
+      (total, nft) => {
+        return computeUnclaimedRewards(nft);
+      },
+      0n
+    );
 
     setTotalUnclaimedRewards(totalUnclaimedRewards);
   }, [stakingNFTs, chain]);
@@ -153,32 +181,32 @@ export default function Home() {
   }
   return (
     <div className="welcome-page-content">
-
       <div className="welcome-page-header">
         <img src={avinocDeFiLogo} className="avinoc-icon" />
         <h2 style={{ fontFamily: "Helvetica", color: "white" }}>AVINOC DeFi</h2>
       </div>
-      {
-        hasBanner && (<div className="voo-banner">
+      {hasBanner && (
+        <div className="voo-banner">
           <div className="voo-banner-title">
-            <h4>
-              Check VOO/AVINOCs new WebOn!
-            </h4>
-            <IconButton className="close-button" onClick={() =>
-              setHasBanner(false)
-            }>
+            <h4>Check VOO/AVINOCs new WebOn!</h4>
+            <IconButton
+              className="close-button"
+              onClick={() => setHasBanner(false)}
+            >
               <CloseIcon />
             </IconButton>
           </div>
           <div style={{ padding: ".5rem" }}></div>
-          <img src={vooCard} alt="voo_card" onClick={() => {
-            installVooOne();
-            setHasBanner(false);
-          }} />
+          <img
+            src={vooCard}
+            alt="voo_card"
+            onClick={() => {
+              installVooOne();
+              setHasBanner(false);
+            }}
+          />
         </div>
-        )
-      }
-
+      )}
 
       {pageState === "IDLE" ? (
         <div />
@@ -188,24 +216,40 @@ export default function Home() {
         </div>
       )}
       <div className="cardBody">
-
         <div className="welcome-page-body">
           <div className="card">
-            <button className={`chainselect-button ${chain === 'zeniq-smart-chain' ? 'selected' : ''}`} onClick={() => {
-              // navigateToMintingPage("zeniq-smart-chain", navigate) 
-              setChain('zeniq-smart-chain')
-            }}>
-              <img src={zeniqLogo} alt="ZENIQ Logo" className="chainselect-logo" />
+            <button
+              className={`chainselect-button ${
+                chain === "zeniq-smart-chain" ? "selected" : ""
+              }`}
+              onClick={() => {
+                // navigateToMintingPage("zeniq-smart-chain", navigate)
+                setChain("zeniq-smart-chain");
+              }}
+            >
+              <img
+                src={zeniqLogo}
+                alt="ZENIQ Logo"
+                className="chainselect-logo"
+              />
               <div className="chainselect-text">
                 <span>ZEN20</span>
               </div>
             </button>
 
-            <button className={`chainselect-button ${chain === 'ethereum' ? 'selected' : ''}`}
+            <button
+              className={`chainselect-button ${
+                chain === "ethereum" ? "selected" : ""
+              }`}
               onClick={() => {
-                setChain('ethereum')
-              }}>
-              <img src={ethLogo} alt="Ethereum Logo" className="chainselect-logo" />
+                setChain("ethereum");
+              }}
+            >
+              <img
+                src={ethLogo}
+                alt="Ethereum Logo"
+                className="chainselect-logo"
+              />
               <div className="chainselect-text-eth">
                 <span>ERC20</span>
               </div>
@@ -213,54 +257,63 @@ export default function Home() {
           </div>
         </div>
         <div className="unclaimed-rewards-card">
-          <h3>   {t("reward.unclaimedRewards")}</h3>
-          {
-            pageState === "IDLE" ?
-            <div style={{display: "contents"}}>
+          <h3>{t("reward.unclaimedRewards")}</h3>
+          {pageState === "IDLE" ? (
+            <>
               <div className="unclaimed-rewards-amount">
-                {formatAVINOCAmount({ tokenAmount: totalUnclaimedRewards, ultraPrecision: true })}</div>
-              <div className="unclaimed-rewards-amount-currency">
-                {formatTokenDollarPrice({ tokenAmount: totalUnclaimedRewards, tokenPrice: avinocPrice.avinocPrice })}
+                {formatAVINOCAmount({
+                  tokenAmount: totalUnclaimedRewards,
+                  ultraPrecision: true,
+                })}
               </div>
-              <button className="claim-all-button" onClick={() => {
-                onClickClaimAll();
-              }}>
+              <div className="unclaimed-rewards-amount-currency">
+                {formatTokenDollarPrice({
+                  tokenAmount: totalUnclaimedRewards,
+                  tokenPrice: avinocPrice.avinocPrice,
+                })}
+              </div>
+              <button className="claim-all-button" onClick={onClickClaimAll}>
                 {t("reward.claimAll")}
               </button>
+            </>
+          ) : isPendingState(pageState) ? (
+            <div className="circular-progress-container">
+              <CircularProgress />
             </div>
-              :
-            <div>{isPendingState(pageState) ?
-              <CircularProgress /> :
-              <div>{getTokenStandard() + ": " + t("status." + pageState)}</div>}
-            </div>
-          }
-          
+          ) : (
+            <div>{getTokenStandard() + ": " + t("status." + pageState)}</div>
+          )}
         </div>
-        <button className="stake-button" onClick={() => {
-          if (chain === 'ethereum') {
-            navigateToMintingPage("ethereum", navigate);
-          }
-          else {
-            navigateToMintingPage("zeniq-smart-chain", navigate);
-          }
-        }}>
+        <button
+          className="stake-button"
+          onClick={() => {
+            if (chain === "ethereum") {
+              navigateToMintingPage("ethereum", navigate);
+            } else {
+              navigateToMintingPage("zeniq-smart-chain", navigate);
+            }
+          }}
+        >
           Stake {chain === "ethereum" ? "ERC20" : "ZEN20"}
         </button>
-        <button className="view-staking-button" onClick={() => navigateToClaimingPage(navigate)}>
+        <button
+          className="view-staking-button"
+          onClick={() => navigateToClaimingPage(navigate)}
+        >
           View Staking NFTs
         </button>
         <div className="welcome-page-col">
-          <img src={vooIcon} className="voo-icon" onClick={
-            () => {
+          <img
+            src={vooIcon}
+            className="voo-icon"
+            onClick={() => {
               installVooOne();
-            }
-          } />
+            }}
+          />
           <div className="welcome-page-footer">
             <button className="migrate-button" onClick={installMigrationWebOn}>
               Perform Migration
-              <div className="migration-info">
-                Migrate from ERC20 to ZEN20
-              </div>
+              <div className="migration-info">Migrate from ERC20 to ZEN20</div>
             </button>
             <div className="migrate-button-divider"></div>
             <button className="migrate-button" onClick={openSmartchainFaucet}>

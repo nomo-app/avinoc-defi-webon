@@ -125,6 +125,13 @@
         background-color: #484b55;
       }
     }
+    .circular-progress-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 1rem;
+    }
   }
 
   .stake-button {
