@@ -1,6 +1,6 @@
-const sshHost = process.env.SSH_TARGET;
+const sshHost = process.env.SSH_TARGET_AVINOC_DEFI;
 if (!sshHost) {
-  throw new Error("SSH_TARGET not set");
+  throw new Error("SSH_TARGET_AVINOC_DEFI not set");
 }
 
 const nomoCliConfig = {
@@ -8,7 +8,7 @@ const nomoCliConfig = {
     production: {
       rawSSH: {
         sshHost,
-        sshBaseDir: "/var/www/production_webons/avinocdefi/",
+        sshBaseDir: "/var/www/html",
         publicBaseUrl: "https://defi.avinoc.com",
         hybrid: true,
       },
