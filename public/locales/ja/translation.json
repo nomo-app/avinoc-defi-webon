@@ -14,6 +14,7 @@
     "ERROR_NO_NFTS": "利用可能なNFTはありません",
     "ERROR_NO_NFTS_CLAIM": "利用できる報酬はありません。 AVINOCの量を選択するために戻ってください。",
     "ERROR_TX_FAILED": "エラー-トランザクションが失敗しました",
+    "ERROR_INSUFFICIENT_ETH": "エラー-取引手数料を支払うことができません。十分なイーサリアムであなたの財布に資金を供給してください。",
     "ERROR_LIMIT_EXCEEDED": "AVINOCのステーキングは最大250000AVINOCに制限されています（15年間のみ）。",
     "ERROR_INSUFFICIENT_AVINOC": "AVINOCの量が不足しています"
   },
