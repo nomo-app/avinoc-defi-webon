@@ -6,6 +6,7 @@ import "./app/globals.css";
 import ClaimRewardsPage from "./app/claiming/logic/ClaimRewardsPage";
 import { HashRouter } from "react-router-dom";
 import { nomo } from "nomo-webon-kit";
+import "./backup-modal.js";
 
 // async function removeDuplicateWebOns() {
 //   const { manifests } = await nomo.getInstalledWebOns();
